@@ -1,11 +1,15 @@
-import { NavLink, useLocation } from "react-router-dom";
-import { House, Info } from "lucide-react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { House, Info, LogOut, UserRound } from "lucide-react";
 
 import logo from "../assets/images/logo/BuddyBook-final.png";
 
 import "../components/Navbar.css";
+import { useContext } from "react";
+import { AuthContext } from "../context/auth.context";
 
 function Navbar() {
+  const { isAuthenticated, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -30,6 +34,28 @@ function Navbar() {
             />
             <span className="font-medium">Home</span>
           </NavLink>
+        )}
+        {isAuthenticated && (
+          <NavLink
+            to="/teams"
+            className="flex items-center gap-2 text-gray-700 transition-colors duration-300 hover:text-pink-500 group"
+          >
+            <UserRound />
+            <span className="font-medium">Team</span>
+          </NavLink>
+        )}
+        {isAuthenticated && (
+          <button
+            onClick={() => {
+              logout();
+              navigate("/");
+              console.log("Logged out");
+            }}
+            className="flex items-center gap-2 text-gray-700 transition-colors duration-300 hover:text-pink-500 group"
+          >
+            <LogOut />
+            <span className="font-medium">LogOut</span>
+          </button>
         )}
 
         <NavLink

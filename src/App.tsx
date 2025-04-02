@@ -11,6 +11,7 @@ import EditDetailsPage from "./pages/EditDetailsPage";
 import CreateTeamPage from "./pages/CreateTeamPage";
 import EditTeamPage from "./pages/EditTeamPage";
 import SignUpPage from "./pages/SignUpPage";
+import LogInPage from "./pages/LogInPage";
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
         <Route path="/teams/:id" element={<MembersPage />} />
         <Route path="/profile/create/:teamId" element={<CreateProfilePage />} />
         <Route path="/signup" element={<SignUpPage />} />
-
+        <Route path="/login" element={<LogInPage />} />
         <Route path="/teams/:teamId/profile/:profileId" element={<Profile />} />
         <Route
           path="/teams/:teamId/members/:profileId/edit"
