@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TeamForm from "../components/TeamForm";
 import axios from "axios";
-import { API_URL } from "../config/api";
 import { useNavigate, useParams } from "react-router-dom";
 import { Team } from "../types";
 const env = import.meta.env.VITE_BASE_API_URL;
@@ -14,10 +13,14 @@ function EditTeamPage() {
 
   useEffect(() => {
     axios
-      .get(`${env}/teams/${teamId}.json`)
+      .get(`${env}/teams/${teamId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("auth")}`,
+        },
+      })
       .then((response) => {
         console.log("Fetched teams:", response.data);
-        setTeamData(response.data);
+        setTeamData(response.data.team);
       })
       .catch((error) => {
         console.error("Error fetching teams:", error);
@@ -33,9 +36,14 @@ function EditTeamPage() {
         timestamp: new Date().toLocaleString(),
       };
 
-      const response = await axios.patch(
-        `${API_URL}/teams/${teamId}.json`,
-        updatedTeamData
+      const response = await axios.put(
+        `${env}/teams/${teamId}`,
+        updatedTeamData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("auth")}`,
+          },
+        }
       );
 
       console.log("Team updated successfully:", response.data);

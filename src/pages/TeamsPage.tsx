@@ -25,19 +25,16 @@ function TeamsPage() {
   // Function to fetch teams data from the API
   const fetchTeams = () => {
     axios
-      .get(`${env}/teams.json`)
+      .get(`${env}/teams`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("auth")}`,
+        },
+      })
       .then((response) => {
         const teamsObject = response.data;
-        if (teamsObject) {
-          // Convert the object into an array
-          const teamsArr = Object.keys(teamsObject).map((id) => ({
-            id,
-            ...teamsObject[id],
-          }));
-          setTeams(teamsArr);
-        } else {
-          setTeams([]); // Set to an empty array if no teams are found
-        }
+
+        setTeams(teamsObject.teams);
+
         setLoading(false); // Set loading to false after fetching
       })
       .catch((error) => {
@@ -53,7 +50,11 @@ function TeamsPage() {
 
     if (action === "delete") {
       axios
-        .delete(`${env}/teams/${team.id}.json`)
+        .delete(`${env}/teams/${team.id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("auth")}`,
+          },
+        })
         .then(() => {
           navigate(`/teams`);
           fetchTeams(); // Refresh the teams list after deletion
