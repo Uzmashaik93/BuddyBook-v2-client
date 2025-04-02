@@ -17,11 +17,18 @@ function CreateTeamPage() {
       console.log("Team Data:", teamData);
 
       // Make API call using async/await
-      const response = await axios.post(`${env}/teams.json`, teamData);
-      const teamId = response.data.name; // Get the new team's ID
+      const response = await axios.post(`${env}/teams`, teamData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("auth")}`,
+        },
+      });
+      const teamId = response.data.team.id; // Get the new team's ID
+      alert("Team created successfully!");
+
+      // const teamId = response.data; // Get the new team's ID
 
       // Redirect to the new team's page
-      navigate(`/teams/${teamId}`);
+      navigate(`/teams`);
     } catch (error) {
       console.error("Error creating team:", error);
       alert("Failed to create team. Please try again.");

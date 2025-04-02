@@ -1,5 +1,5 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { House, Info, LogOut, UserRound } from "lucide-react";
+import { House, Info, LogOut, UserRound, UsersRound } from "lucide-react";
 
 import logo from "../assets/images/logo/BuddyBook-final.png";
 
@@ -8,11 +8,11 @@ import { useContext } from "react";
 import { AuthContext } from "../context/auth.context";
 
 function Navbar() {
-  const { isAuthenticated, logout } = useContext(AuthContext);
+  const { isAuthenticated, logout, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
-
+  console.log("User", user);
   return (
     <div className="navbar-container flex justify-between items-center bg-white shadow-md px-6 py-3 top-0 w-full z-50">
       {/* Logo */}
@@ -35,13 +35,23 @@ function Navbar() {
             <span className="font-medium">Home</span>
           </NavLink>
         )}
-        {isAuthenticated && (
+
+        {isAuthenticated && currentPath !== "/teams" && (
           <NavLink
             to="/teams"
             className="flex items-center gap-2 text-gray-700 transition-colors duration-300 hover:text-pink-500 group"
           >
-            <UserRound />
+            <UsersRound />
             <span className="font-medium">Team</span>
+          </NavLink>
+        )}
+        {isAuthenticated && currentPath !== "/profile" && (
+          <NavLink
+            to="/teams/:teamId/profile/:profileId"
+            className="flex items-center gap-2 text-gray-700 transition-colors duration-300 hover:text-pink-500 group"
+          >
+            <UserRound />
+            <span className="font-medium">{user?.username}</span>
           </NavLink>
         )}
         {isAuthenticated && (
