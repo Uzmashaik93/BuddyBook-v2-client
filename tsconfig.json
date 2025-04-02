@@ -1,0 +1,14 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "es2020",      /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', 'ES2021', 'ES2022', 'ES2023', 'ESNEXT', 'JSON', 'Latest'. */
+    "module": "esnext",      /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', 'esnext', 'node12', 'nodenext'. */
+    "lib": ["es2020", "dom", "dom.iterable", "scripthost"], /* Specify library files to be included in the compilation. */
+    "outDir": "./dist",        /* Redirect output structure to the directory. */
+    "rootDir": "./src",   }
+}

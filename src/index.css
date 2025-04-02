@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap");
+@import "tailwindcss";
+@tailwind utilities;
+
+body {
+  text-align: center;
+  background-color: white;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  background: url("./assets/images/background.png") no-repeat center center
+    fixed;
+  background-size: contain;
+  opacity: 0.15;
+  background-repeat: repeat;
+  z-index: -1;
+}
