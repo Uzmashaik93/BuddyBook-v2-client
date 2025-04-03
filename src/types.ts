@@ -16,7 +16,7 @@ export interface Team {
 
 export interface Member {
     id: string
-    age: string
+    age: number
     comments: Comment[]
     customAnswers: CustomAnswer[]
     customQuestion: string
