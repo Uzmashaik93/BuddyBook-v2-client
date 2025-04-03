@@ -53,21 +53,18 @@ function CreateProfilePage() {
 
   const onSubmit = async (data: Member) => {
     try {
-      const newProfile = {
-        name: data.name,
-        place: data.place,
-        age: data.age,
-        hobbies: data.hobbies,
-        linkedIn: data.linkedIn,
-        question1: data.question1,
-        question2: data.question2,
-        customQuestion: data.customQuestion,
-      };
-      const response = await axios.post(`${env}/members`, newProfile, {
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
+      const response = await axios.post(
+        `${env}/members`,
+        {
+          ...data,
+          age: Number(data.age),
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        }
+      );
       console.log("Success", response);
       navigate(`/teams/${teamId}`);
     } catch (error) {
