@@ -1,11 +1,11 @@
 import axios from "axios";
-import { API_URL } from "../config/api";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Users, Trash2, UserPen } from "lucide-react"; // Import icons
 import "../pages/TeamsPage.css";
 import Loader from "../components/Loader";
 import { Team } from "../types";
+import { colorSets } from "../constants";
 const env = import.meta.env.VITE_BASE_API_URL;
 
 function TeamsPage() {
@@ -43,6 +43,8 @@ function TeamsPage() {
       });
   };
 
+  console.log("Fetched teams:", teams);
+
   const handleRequestAccess = (team: Team, action: "view" | "delete") => {
     if (action === "view") {
       navigate(`/teams/${team.id}`);
@@ -65,28 +67,6 @@ function TeamsPage() {
         });
     }
   };
-
-  // Predefined color sets for styling teams dynamically
-  const colorSets = [
-    {
-      bg: "bg-yellow-100",
-      border: "border-yellow-200",
-      icon: "text-yellow-400",
-    },
-    {
-      bg: "bg-purple-100",
-      border: "border-purple-200",
-      icon: "text-purple-400",
-    },
-    {
-      bg: "bg-orange-100",
-      border: "border-orange-200",
-      icon: "text-orange-400",
-    },
-    { bg: "bg-pink-100", border: "border-pink-200", icon: "text-pink-400" },
-    { bg: "bg-blue-100", border: "border-blue-200", icon: "text-blue-400" },
-    { bg: "bg-green-100", border: "border-green-200", icon: "text-green-400" },
-  ];
 
   // Show loading spinner while fetching data
   if (loading) {

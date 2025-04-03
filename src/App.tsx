@@ -1,40 +1,78 @@
-import { Route, Routes } from "react-router-dom";
+import "./pages/TeamsPage.css";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import TeamsPage from "./pages/TeamsPage";
 import MembersPage from "./pages/MembersPage";
 import Profile from "./pages/ProfileDetailPage";
 import ErrorPage from "./pages/ErrorPage";
-import Navbar from "./components/Navbar";
 import CreateProfilePage from "./pages/CreateProfilePage";
-import About from "./pages/AboutPage";
 import EditDetailsPage from "./pages/EditDetailsPage";
 import CreateTeamPage from "./pages/CreateTeamPage";
 import EditTeamPage from "./pages/EditTeamPage";
 import SignUpPage from "./pages/SignUpPage";
 import LogInPage from "./pages/LogInPage";
+import NonAuthPages from "./pages/NonAuthPages";
+import AboutPage from "./pages/AboutPage";
+import AuthPages from "./pages/AuthPages";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    Component: NonAuthPages,
+    errorElement: <ErrorPage />,
+    children: [
+      { index: true, Component: Homepage },
+      { path: "signup", Component: SignUpPage },
+      { path: "login", Component: LogInPage },
+      { path: "about", Component: AboutPage },
+    ],
+  },
+  {
+    path: "/teams",
+    Component: AuthPages,
+    errorElement: <ErrorPage />,
+    children: [
+      { index: true, Component: TeamsPage },
+      {
+        path: "/teams/create",
+        Component: CreateTeamPage,
+      },
+      {
+        path: "/teams/:teamId/edit",
+        Component: EditTeamPage,
+      },
+      {
+        path: "/teams/:id",
+        Component: MembersPage,
+      },
+      {
+        path: "/teams/:teamId/profile/:profileId",
+        Component: Profile,
+      },
+      {
+        path: "/teams/:teamId/members/:profileId/edit",
+        Component: EditDetailsPage,
+      },
+    ],
+  },
+  {
+    path: "/profile",
+    Component: AuthPages,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        path: "/profile/create/:teamId",
+        Component: CreateProfilePage,
+      },
+    ],
+  },
+]);
 
 function App() {
   return (
     <div>
-      <Navbar />
-
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/teams" element={<TeamsPage />} />
-        <Route path="/teams/create" element={<CreateTeamPage />} />
-        <Route path="/teams/:teamId/edit" element={<EditTeamPage />} />
-        <Route path="/teams/:id" element={<MembersPage />} />
-        <Route path="/profile/create/:teamId" element={<CreateProfilePage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/login" element={<LogInPage />} />
-        <Route path="/teams/:teamId/profile/:profileId" element={<Profile />} />
-        <Route
-          path="/teams/:teamId/members/:profileId/edit"
-          element={<EditDetailsPage />}
-        />
-        <Route path="/about" element={<About />} />
-        <Route path="/*" element={<ErrorPage />} />
-      </Routes>
+      <RouterProvider router={router} />
     </div>
   );
 }
