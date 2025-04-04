@@ -43,7 +43,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const fetchUser = async () => {
     try {
       const token = getToken(); // Get token (or use cookies/session)
-      console.log("Token:", token);
+
       if (!token) return;
 
       const response = await axios.get(
@@ -54,7 +54,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
           },
         }
       );
-      console.log("Response:", response);
 
       // Check if the response is ok (status code 200)
 

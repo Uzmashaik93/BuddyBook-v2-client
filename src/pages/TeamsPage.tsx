@@ -43,10 +43,10 @@ function TeamsPage() {
       });
   };
 
-  console.log("Fetched teams:", teams);
-
   const handleRequestAccess = (team: Team, action: "view" | "delete") => {
     if (action === "view") {
+      console.log("Team ID:", team);
+
       navigate(`/teams/${team.id}`);
     }
 
@@ -96,6 +96,7 @@ function TeamsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {teams.map((team, index) => {
               const colors = colorSets[index % colorSets.length];
+
               return (
                 <div
                   key={team.id}
@@ -112,7 +113,7 @@ function TeamsPage() {
                     Created by: {team.createdBy}
                   </p>
                   <p className="text-sm mb-4 relative z-10 text-gray-800">
-                    {team.members ? Object.keys(team.members).length : 0}{" "}
+                    {team.members ? Object.keys(team.members).length : 0}
                     members
                   </p>
                   <button

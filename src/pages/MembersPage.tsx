@@ -1,20 +1,27 @@
+import "../pages/MembersPage.css";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
-const env = import.meta.env.VITE_BASE_API_URL;
-
+import { useContext, useEffect, useState } from "react";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import BackButton from "../components/BackButton";
 import Loader from "../components/Loader";
-
 import { Plus, User } from "lucide-react";
-import "../pages/MembersPage.css";
 import { colorSetsMembers } from "../constants";
+import { AuthContext } from "../context/auth.context";
+import { Member, Team } from "../types";
+const env = import.meta.env.VITE_BASE_API_URL;
 
 function MembersPage() {
   const { id } = useParams();
+  console.log(id);
+  const { getToken } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [team, setTeam] = useState<{
-    team: { teamName: string; createdBy: string };
+    id: string;
+    teamName: string;
+    createdBy: string;
+    createdAt: string;
+    updatedAt: string;
   } | null>(null);
   const [members, setMembers] = useState([]);
 
@@ -28,16 +35,21 @@ function MembersPage() {
 
   const fetchTeamData = async () => {
     try {
-      const response = await axios.get(`${env}/teams/${id}`, {
+      if (!id) {
+        console.error("Team ID is not defined");
+        return;
+      }
+      const response = await axios.get(`${env}/team/${id}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("auth")}`,
+          Authorization: `Bearer ${getToken()}`,
         },
       });
-      const { members: teamMembers, ...teamData } = response.data;
-      setTeam(teamData);
+      console.log(response.data);
 
-      if (teamMembers) {
-        setMembers(teamMembers);
+      const { members } = response.data;
+
+      if (members) {
+        setMembers(members);
       }
     } catch (error) {
       console.log("Error", error);
@@ -45,6 +57,17 @@ function MembersPage() {
   };
 
   useEffect(() => {
+    axios
+      .get(`${env}/teams/${id}`, {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      })
+      .then((response) => {
+        const teamObject = response.data.team;
+
+        setTeam(teamObject);
+      });
     if (id) {
       fetchTeamData();
     }
@@ -67,20 +90,23 @@ function MembersPage() {
       <div className="flex flex-col md:flex-row flex-wrap items-center gap-4 justify-center w-full px-6 pb-6 md:px-10 md:pb-0 md:mb-8 mt-4">
         <div className="text-center flex-1">
           <h2 className="text-4xl font-bold text-black drop-shadow-lg">
-            Team Name: {team.team.teamName}
+            Team Name:{team?.teamName}
           </h2>
           <h1 className="text-xs !mb-0 !text-gray-400 font-bold mt-1">
-            Created by {team.team.createdBy}
+            Created by {team?.createdBy}
           </h1>
         </div>
       </div>
 
-      <NavLink to={`/profile/create/${id}`}>
-        <button className="flex gap-1 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 shadow-md mx-auto  mb-10 hover:cursor-pointer">
-          <Plus strokeWidth={4} size={25} />
-          Add Your Profile
-        </button>
-      </NavLink>
+      <button
+        onClick={() => {
+          navigate(`/profile/create/${id}`);
+        }}
+        className="flex gap-1 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 shadow-md mx-auto  mb-10 hover:cursor-pointer"
+      >
+        <Plus strokeWidth={4} size={25} />
+        Add Your Profile
+      </button>
 
       <div className="flex justify-evenly flex-wrap gap-6 ml-10 mr-10 mb-10">
         {!members.length ? (
@@ -88,8 +114,9 @@ function MembersPage() {
             No Profiles Created!
           </div>
         ) : (
-          members.map((profileObj) => {
+          members.map((profileObj: Member) => {
             // Assign a unique random color set to each card
+
             const colors = getRandomColorSet();
 
             return (
@@ -109,7 +136,6 @@ function MembersPage() {
                     <User className="user-icon" />
                   )}
                 </div>
-
                 {/* Text Content */}
                 <div className="text-center mt-4">
                   <h3 className="text-l font-semibold text-gray-800">
@@ -117,7 +143,6 @@ function MembersPage() {
                   </h3>
                   <p className="text-sm text-gray-600">{profileObj.place}</p>
                 </div>
-
                 {/* Button */}
                 <div className="mt-4">
                   <NavLink to={`/teams/${id}/profile/${profileObj.id}`}>

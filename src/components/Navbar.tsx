@@ -12,7 +12,6 @@ function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
-  console.log("User", user);
   return (
     <div className="navbar-container flex justify-between items-center bg-white shadow-md px-6 py-3 top-0 w-full z-50">
       {/* Logo */}

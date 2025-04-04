@@ -54,7 +54,7 @@ function CreateProfilePage() {
   const onSubmit = async (data: Member) => {
     try {
       const response = await axios.post(
-        `${env}/members`,
+        `${env}/team/${teamId}/member`,
         {
           ...data,
           age: Number(data.age),
