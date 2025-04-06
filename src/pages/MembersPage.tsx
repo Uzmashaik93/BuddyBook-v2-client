@@ -7,12 +7,11 @@ import Loader from "../components/Loader";
 import { Plus, User } from "lucide-react";
 import { colorSetsMembers } from "../constants";
 import { AuthContext } from "../context/auth.context";
-import { Member, Team } from "../types";
+import { Member } from "../types";
 const env = import.meta.env.VITE_BASE_API_URL;
 
 function MembersPage() {
   const { id } = useParams();
-  console.log(id);
   const { getToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -22,6 +21,7 @@ function MembersPage() {
     createdBy: string;
     createdAt: string;
     updatedAt: string;
+    userId: string;
   } | null>(null);
   const [members, setMembers] = useState([]);
 
@@ -65,7 +65,6 @@ function MembersPage() {
       })
       .then((response) => {
         const teamObject = response.data.team;
-
         setTeam(teamObject);
       });
     if (id) {
@@ -122,7 +121,7 @@ function MembersPage() {
             return (
               <div
                 key={profileObj.id}
-                className={`${colors.bg} ${colors.border} border-2 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden h-55 w-56 flex flex-col items-center p-4`} // Smaller card size
+                className={`${colors.bg} ${colors.border} border-2 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden h-55 w-56 flex flex-col items-center p-2`} // Smaller card size
               >
                 {/* Image Container */}
                 <div className="w-20 h-20 overflow-hidden rounded-full flex items-center justify-center">
@@ -141,6 +140,9 @@ function MembersPage() {
                   <h3 className="text-l font-semibold text-gray-800">
                     {profileObj.name}
                   </h3>
+                  {team.userId === profileObj.userId && (
+                    <p className="text-sm text-gray-600">Admin</p>
+                  )}
                   <p className="text-sm text-gray-600">{profileObj.place}</p>
                 </div>
                 {/* Button */}
