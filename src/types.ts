@@ -1,17 +1,18 @@
 export interface User {
     id: string
-    userName: string
+    username: string
     email: string
     password: string
 }
 
 export interface Team {
-    createdBy: string
+    createdBy: User
     createdByEmail: string
     id: string
     members: Member[]
     teamName: string
     timestamp: string
+
 }
 
 export interface Member {
@@ -26,7 +27,24 @@ export interface Member {
     place: string
     question1: string
     question2: string
+    invites: TeamInvite[]
 }
+
+enum InviteStatus {
+    PENDING,
+    ACCEPTED,
+    DECLINED
+}
+
+export interface TeamInvite {
+    id: string
+    teamId: string
+    invitedUserEmail: string
+    status: InviteStatus
+    team: Team
+}
+
+
 
 export interface Comment {
     id: string

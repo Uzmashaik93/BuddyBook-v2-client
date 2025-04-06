@@ -14,6 +14,7 @@ import LogInPage from "./pages/LogInPage";
 import NonAuthPages from "./pages/NonAuthPages";
 import AboutPage from "./pages/AboutPage";
 import AuthPages from "./pages/AuthPages";
+import InivitePage from "./pages/InivitePage";
 
 const router = createBrowserRouter([
   {
@@ -64,6 +65,18 @@ const router = createBrowserRouter([
         index: true,
         path: "/profile/create/:teamId",
         Component: CreateProfilePage,
+      },
+    ],
+  },
+  {
+    path: "/invite",
+    Component: AuthPages,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        path: "/invite/:teamId",
+        Component: InivitePage,
       },
     ],
   },
