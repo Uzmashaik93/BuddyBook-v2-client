@@ -37,7 +37,7 @@ function LogInPage() {
         return;
       }
     } catch (error) {
-      console.error("Error creating user:", error);
+      console.error("Error Logging in:", error);
       alert("Failed to create user. Please try again.");
     }
   };
