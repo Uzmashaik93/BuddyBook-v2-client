@@ -1,9 +1,19 @@
 /* eslint-disable react/prop-types */
 import axios from "axios";
 import { useState } from "react";
-import { API_URL } from "../config/api";
+const env = import.meta.env.VITE_BASE_API_URL;
 
-function Comments({ teamId, profileId, user, onRefresh }) {
+interface CommentsProps {
+  teamId: string;
+  profileId: string;
+  user: {
+    displayName: string;
+    email: string;
+  };
+  onRefresh: () => void;
+}
+
+function Comments({ teamId, profileId, user, onRefresh }: CommentsProps) {
   const [comment, setComment] = useState("");
 
   const handleChange = (event) => {
@@ -14,11 +24,21 @@ function Comments({ teamId, profileId, user, onRefresh }) {
     e.preventDefault();
 
     axios
-      .post(`${API_URL}/teams/${teamId}/members/${profileId}/comments.json`, {
-        comment,
-        name: user.displayName,
-      })
+      .post(
+        `${env}/comments/member/${profileId}`,
+        {
+          comment,
+          name: user.displayName,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("auth")}`,
+          },
+        }
+      )
       .then((response) => {
+        console.log("Success", response);
+
         setComment("");
         onRefresh();
       })
