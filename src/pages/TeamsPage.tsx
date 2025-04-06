@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Users, Trash2, UserPen } from "lucide-react"; // Import icons
+import { Users, Trash2, UserPen, UserPlus } from "lucide-react"; // Import icons
 import "../pages/TeamsPage.css";
 import Loader from "../components/Loader";
 import { Team } from "../types";
@@ -110,7 +110,7 @@ function TeamsPage() {
                     Team: {team.teamName}
                   </h2>
                   <p className="text-sm mb-4 relative z-10 text-gray-600">
-                    Created by: {team.createdBy}
+                    Created by: {team.createdBy.username}
                   </p>
                   <p className="text-sm mb-4 relative z-10 text-gray-800">
                     {team.members ? Object.keys(team.members).length : 0}
@@ -136,6 +136,12 @@ function TeamsPage() {
                       className="text-xs bg-red-300 hover:bg-red-500 text-white font-bold py-1 px-3 rounded-full transition duration-300"
                     >
                       <Trash2 className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => navigate(`/invite/${team.id}`)}
+                      className="text-xs bg-blue-400 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded-full transition duration-300"
+                    >
+                      <UserPlus className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
