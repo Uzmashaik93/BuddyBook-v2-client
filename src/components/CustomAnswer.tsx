@@ -1,9 +1,24 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
 import { useState } from "react";
-import { API_URL } from "../config/api";
+const env = import.meta.env.VITE_BASE_API_URL;
 
-function CustomAnswer({ teamId, profileId, user, onRefresh }) {
+interface CustomAnswerProps {
+  teamId: string;
+  profileId: string;
+  user: {
+    email: string;
+    displayName: string;
+  };
+  onRefresh: () => void;
+}
+
+function CustomAnswer({
+  teamId,
+  profileId,
+  user,
+  onRefresh,
+}: CustomAnswerProps) {
   const [answer, setAnswer] = useState("");
 
   const handleChange = (e) => {
@@ -14,15 +29,20 @@ function CustomAnswer({ teamId, profileId, user, onRefresh }) {
     e.preventDefault();
     axios
       .post(
-        `${API_URL}/teams/${teamId}/members/${profileId}/customAnswers.json`,
-
+        `${env}/custom/member/${profileId}`,
         {
           email: user.email,
           name: user.displayName,
           answer,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("auth")}`,
+          },
         }
       )
       .then((response) => {
+        console.log("Answer submitted successfully", response.data);
         setAnswer("");
         onRefresh();
       })
