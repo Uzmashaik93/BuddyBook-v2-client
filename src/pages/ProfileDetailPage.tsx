@@ -1,7 +1,6 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import { API_URL } from "../config/api";
 import { Trash2, UserPen, Smile, Paperclip, Palmtree } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
@@ -15,37 +14,59 @@ import CardCarousel from "../components/CardCarousal";
 import CommentsCard from "../components/CommentsCard";
 
 import dummyImage from "../assets/images/dummy-profile-image.png";
+import { AuthContext } from "../context/auth.context";
+import { Member } from "../types";
+
+const env = import.meta.env.VITE_BASE_API_URL;
 
 function Profile() {
   const { profileId, teamId } = useParams();
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState<Member | null>(null);
+  const { user } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
-  const getProfile = () => {
-    axios
-      .get(`${API_URL}/teams/${teamId}/members/${profileId}.json`)
-      .then((response) => {
-        setProfile(response.data);
-      })
-      .catch((e) => {
-        console.log("Error", e);
-      });
+  const getProfile = async () => {
+    try {
+      const response = await axios.get(
+        `${env}/team/${teamId}/member/${profileId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("auth")}`,
+          },
+        }
+      );
+      console.log("Fetched profile:", response.data);
+
+      setProfile(response.data.member);
+    } catch (e) {
+      console.log("Error", e);
+      setProfile(null);
+    }
   };
 
   useEffect(() => {
     getProfile();
   }, []);
 
-  const handleDelete = () => {
-    axios
-      .delete(`${API_URL}/teams/${teamId}/members/${profileId}.json`)
-      .then(() => {
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(
+        `${env}/team/${teamId}/member/${profileId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("auth")}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        alert("Profile deleted successfully");
         navigate(`/teams/${teamId}`);
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
+      }
+    } catch (error) {
+      console.error("Error deleting profile:", error);
+      alert("Error deleting profile. Please try again.");
+    }
   };
 
   if (profile === null) {
@@ -88,7 +109,7 @@ function Profile() {
                 size={70}
               />
               <img
-                src={profile.profileImage || dummyImage}
+                src={dummyImage}
                 alt="Profile"
                 className="w-64 h-64 object-cover mb-2"
               />
@@ -168,7 +189,10 @@ function Profile() {
                   <UserPen size={29} className="mt-2" />
                 </button>
               </NavLink>
-              <button className="text-red-500" onClick={handleDelete}>
+              <button
+                className="text-red-500 hover:cursor-pointer"
+                onClick={handleDelete}
+              >
                 <Trash2 size={29} />
               </button>
             </div>
