@@ -11,9 +11,8 @@ function CreateTeamPage() {
   const handleSubmit = async (data: Team) => {
     try {
       const teamName = data.teamName;
-      const createdBy = data.createdBy; // Replace with actual user data
 
-      const teamData = { teamName, createdBy };
+      const teamData = { teamName };
       console.log("Team Data:", teamData);
 
       // Make API call using async/await
@@ -22,7 +21,6 @@ function CreateTeamPage() {
           Authorization: `Bearer ${localStorage.getItem("auth")}`,
         },
       });
-      const teamId = response.data.team.id; // Get the new team's ID
       alert("Team created successfully!");
 
       // const teamId = response.data; // Get the new team's ID
