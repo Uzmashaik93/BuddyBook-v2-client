@@ -28,7 +28,6 @@ function TeamForm({
     // This allows the form to be used for both creating and editing teams
     defaultValues: {
       teamName: "",
-      createdBy: "",
     },
   });
 
@@ -36,7 +35,6 @@ function TeamForm({
     if (teamData) {
       reset({
         teamName: teamData.teamName,
-        createdBy: teamData.createdBy,
       });
     }
   }, [teamData, reset]);
@@ -64,17 +62,7 @@ function TeamForm({
             />
             {errors.teamName && <span>This field is required</span>}
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 text-center">
-              Created By
-            </label>
-            <input
-              type="text"
-              placeholder="Enter your name"
-              className="mt-2 p-2 w-full border-2 border-black bg-gray-100 rounded-md focus:ring-pink-800 focus:border-pink-500 text-center"
-              {...register("createdBy", { required: true })}
-            />
-          </div>
+
           {/* Action buttons */}
           <div className="flex justify-around space-x-4">
             <button type="submit" className="button-confirm">
