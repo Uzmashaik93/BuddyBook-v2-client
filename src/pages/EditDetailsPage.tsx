@@ -7,79 +7,109 @@ import BackButton from "../components/BackButton";
 import Loader from "../components/Loader";
 
 import "../pages/CreateProfilePage.css";
+import { useForm } from "react-hook-form";
+import { Member } from "../types";
+const env = import.meta.env.VITE_BASE_API_URL;
 
 function EditProfilePage() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<Member>();
+
   const { teamId, profileId } = useParams();
   const navigate = useNavigate();
-  const [profile, setProfile] = useState({
-    name: "",
-    place: "",
-    age: "",
-    hobbies: "",
-    linkedIn: "",
-    question1: "",
-    question2: "",
-    customQuestions: "",
-  });
-
-  const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  // const [image, setImage] = useState(null);
 
   // Fetch existing profile when component loads
   useEffect(() => {
-    axios
-      .get(`${API_URL}/teams/${teamId}/members/${profileId}.json`)
-      .then((response) => {
-        setProfile(response.data);
+    const fetchProfile = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `${env}/team/${teamId}/member/${profileId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("auth")}`,
+            },
+          }
+        );
+        console.log("Fetched profile:", response.data);
+        reset(response.data.member);
         // Keep the existing image
-      })
-      .catch((error) => console.error("Error fetching profile", error));
-  }, [profileId, teamId]);
+      } catch (error) {
+        console.error("Error fetching profile", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   // Convert image to Base64
-  const handleFileChange = async (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append(
-        "upload_preset",
-        import.meta.env.VITE_UNSIGNED_UPLOAD_PRESET
-      );
-      formData.append("cloud_name", import.meta.env.VITE_CLOUD_NAME);
+  // const handleFileChange = async (event) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     const formData = new FormData();
+  //     formData.append("file", file);
+  //     formData.append(
+  //       "upload_preset",
+  //       import.meta.env.VITE_UNSIGNED_UPLOAD_PRESET
+  //     );
+  //     formData.append("cloud_name", import.meta.env.VITE_CLOUD_NAME);
 
-      try {
-        const response = await axios.post(
-          `https://api.cloudinary.com/v1_1/${
-            import.meta.env.VITE_CLOUD_NAME
-          }/upload`,
-          formData
-        );
-        // After successful upload, store the image URL
-        setImage(response.data.secure_url);
-      } catch (error) {
-        console.error("Error uploading the file:", error);
-      }
-    }
-  };
+  //     try {
+  //       const response = await axios.post(
+  //         `https://api.cloudinary.com/v1_1/${
+  //           import.meta.env.VITE_CLOUD_NAME
+  //         }/upload`,
+  //         formData
+  //       );
+  //       // After successful upload, store the image URL
+  //       setImage(response.data.secure_url);
+  //     } catch (error) {
+  //       console.error("Error uploading the file:", error);
+  //     }
+  //   }
+  // };
 
   // Handle input change
-  const handleChange = (event) => {
-    setProfile({ ...profile, [event.target.name]: event.target.value });
-  };
+  // const handleChange = (event) => {
+  //   setProfile({ ...profile, [event.target.name]: event.target.value });
+  // };
 
-  const handleCancel = (event) => {
+  const handleCancel = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     navigate(`/teams/${teamId}/profile/${profileId}`);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const updatedProfile = { ...profile, profileImage: image };
+  const onSubmit = async (data: Member) => {
+    // const updatedProfile = { ...profile, profileImage: image };
+
+    const updatedProfile = {
+      ...data,
+      name: data.name,
+      place: data.place,
+      hobbies: data.hobbies,
+      linkedIn: data.linkedIn,
+      question1: data.question1,
+      question2: data.question2,
+      age: Number(data.age),
+    };
 
     try {
       await axios.put(
-        `${API_URL}/teams/${teamId}/members/${profileId}.json`,
-        updatedProfile
+        `${env}/team/${teamId}/member/${profileId}`,
+        updatedProfile,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("auth")}`,
+          },
+        }
       );
       console.log("Profile updated successfully");
       navigate(`/teams/${teamId}/profile/${profileId}`);
@@ -88,7 +118,7 @@ function EditProfilePage() {
     }
   };
 
-  if (!profile) {
+  if (loading) {
     return <Loader />;
   }
 
@@ -105,7 +135,7 @@ function EditProfilePage() {
       <div>
         <form
           className="form bg-gradient-to-r from-pink-100 to-blue-100"
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
         >
           <div className="new-profile-title">
             <h2>
@@ -118,11 +148,8 @@ function EditProfilePage() {
                 <label className="text-center">Hey, what’s your name?</label>
                 <input
                   className="input"
-                  name="name"
                   type="text"
-                  value={profile.name}
-                  onChange={handleChange}
-                  required
+                  {...register("name", { required: true })}
                 />
               </div>
 
@@ -130,11 +157,8 @@ function EditProfilePage() {
                 <label className="text-center">Where are you from?</label>
                 <input
                   className="input"
-                  name="place"
                   type="text"
-                  value={profile.place}
-                  onChange={handleChange}
-                  required
+                  {...register("place", { required: true })}
                 />
               </div>
 
@@ -144,12 +168,9 @@ function EditProfilePage() {
                 </label>
                 <input
                   className="input"
-                  name="age"
                   type="number"
-                  value={profile.age}
                   min="0"
-                  onChange={handleChange}
-                  required
+                  {...register("age", { required: true })}
                 />
               </div>
 
@@ -157,11 +178,8 @@ function EditProfilePage() {
                 <label className="text-center">Got any fun hobbies?</label>
                 <input
                   className="input"
-                  name="hobbies"
                   type="text"
-                  value={profile.hobbies}
-                  onChange={handleChange}
-                  required
+                  {...register("hobbies", { required: true })}
                 />
               </div>
 
@@ -169,10 +187,8 @@ function EditProfilePage() {
                 <label className="text-center">Got a LinkedIn?</label>
                 <input
                   className="input"
-                  name="linkedIn"
                   type="text"
-                  value={profile.linkedIn}
-                  onChange={handleChange}
+                  {...register("linkedIn", { required: true })}
                 />
               </div>
             </div>
@@ -185,10 +201,8 @@ function EditProfilePage() {
                 </label>
                 <input
                   className="input"
-                  name="question1"
                   type="text"
-                  value={profile.question1}
-                  onChange={handleChange}
+                  {...register("question1", { required: true })}
                 />
               </div>
 
@@ -198,13 +212,11 @@ function EditProfilePage() {
                 </label>
                 <input
                   className="input"
-                  name="question2"
                   type="text"
-                  value={profile.question2}
-                  onChange={handleChange}
+                  {...register("question2", { required: true })}
                 />
               </div>
-
+              {/* 
               <div>
                 {profile.customQuestions &&
                   profile.customQuestions.map((question, index) => (
@@ -214,16 +226,16 @@ function EditProfilePage() {
                       </label>
                       <input
                         className="input"
-                        name={`customQuestion-${index}`}
                         type="text"
-                        value={question}
-                        onChange={handleChange}
+                        {...register(`customQuestions[${index}]`, {
+                          required: true,
+                        })}
                       />
                     </div>
                   ))}
-              </div>
+              </div> */}
 
-              <div className="flex flex-col">
+              {/* <div className="flex flex-col">
                 <label className="text-center">Upload your picture</label>
 
                 <input
@@ -231,9 +243,9 @@ function EditProfilePage() {
                   type="file"
                   accept="image/*"
                   onChange={handleFileChange}
-                />
-                {/* Image Preview */}
-                {image && (
+                /> */}
+              {/* Image Preview */}
+              {/* {image && (
                   <div className="flex justify-center mt-4">
                     <img
                       src={image}
@@ -242,11 +254,13 @@ function EditProfilePage() {
                     />
                   </div>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
 
-          <button className="button-confirm">Update</button>
+          <button className="button-confirm" type="submit">
+            Update
+          </button>
           <button
             className="button-confirm"
             type="submit"
