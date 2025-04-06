@@ -16,7 +16,7 @@ function SignUpPage() {
   // Function to handle form submission
   const handleOnSubmit = async (data: User) => {
     const userData = {
-      username: data.userName,
+      username: data.username,
       email: data.email,
       password: data.password,
     };
@@ -47,7 +47,7 @@ function SignUpPage() {
               className="mt-2 p-2 w-full border-2 border-black bg-gray-100 border-gray-30 rounded-md text-center"
               {...register("userName", { required: true })}
             />
-            {errors.userName && <span>This field is required</span>}
+            {errors.username && <span>This field is required</span>}
           </div>
           <div>
             <input
