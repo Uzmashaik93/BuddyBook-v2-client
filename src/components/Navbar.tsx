@@ -44,15 +44,7 @@ function Navbar() {
             <span className="font-medium">Team</span>
           </NavLink>
         )}
-        {isAuthenticated && currentPath !== "/profile" && (
-          <NavLink
-            to="/teams/:teamId/profile/:profileId"
-            className="flex items-center gap-2 text-gray-700 transition-colors duration-300 hover:text-pink-500 group"
-          >
-            <UserRound />
-            <span className="font-medium">{user?.username}</span>
-          </NavLink>
-        )}
+
         {isAuthenticated && (
           <button
             onClick={() => {
