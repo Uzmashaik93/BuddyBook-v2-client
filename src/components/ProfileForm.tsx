@@ -1,19 +1,46 @@
 import { UseFormReturn } from "react-hook-form";
 import { Member } from "../types";
+import axios from "axios";
+import { useState } from "react";
 
 interface ProfileFormProps {
   onSubmit: (data: Member) => void;
   form: UseFormReturn<Member>;
   onCancel?: () => void;
   showCancel?: boolean;
+  heading: string;
 }
 function ProfileForm({
   onSubmit,
   form,
   showCancel,
   onCancel,
+  heading,
 }: ProfileFormProps) {
-  const { register, handleSubmit } = form;
+  const { register, handleSubmit, setValue, watch } = form;
+  const imageUrl = watch("imageUrl");
+
+  const handleImage = (event) => {
+    const url = `https://api.cloudinary.com/v1_1/${
+      import.meta.env.VITE_CLOUD_NAME
+    }/upload`;
+    const dataToUpload = new FormData();
+    dataToUpload.append("file", event.target.files[0]);
+    // VITE_UNSIGNED_UPLOAD_PRESET => name of the unsigned upload preset created in your Cloudinary account
+    dataToUpload.append(
+      "upload_preset",
+      import.meta.env.VITE_UNSIGNED_UPLOAD_PRESET
+    );
+    axios
+      .post(url, dataToUpload)
+      .then((response) => {
+        // the image url is stored in the property secure_url
+        setValue("imageUrl", response.data.secure_url);
+      })
+      .catch((error) => {
+        console.error("Error uploading the file:", error);
+      });
+  };
 
   const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -30,7 +57,7 @@ function ProfileForm({
       >
         <div className="new-profile-title">
           <h2>
-            <span>Create your profile 😎</span>
+            <span>{heading} 😎</span>
           </h2>
         </div>
         <div className="flex justify-evenly flex-wrap gap-35">
@@ -122,21 +149,25 @@ function ProfileForm({
               </div>
             </div>
 
-            {/* <div className="flex flex-col">
-            <label className="text-center">Upload your picture</label>
+            <input
+              type="hidden"
+              {...register("imageUrl", { required: true })}
+            />
+            <div className="flex flex-col">
+              <label className="text-center">Upload your picture</label>
 
-            <input className="input" type="file" onChange={handleImage} /> */}
-            {/* Image Preview */}
-            {/* {image && (
-              <div className="flex justify-center mt-4">
-                <img
-                  src={image}
-                  alt="my cloudinary image"
-                  className="w-24 h-24 object-cover rounded-full border"
-                />
-              </div>
-            )} */}
-            {/* </div> */}
+              <input className="input" type="file" onChange={handleImage} />
+              {/* Image Preview */}
+              {imageUrl && (
+                <div className="flex justify-center mt-4">
+                  <img
+                    src={imageUrl}
+                    alt="my cloudinary image"
+                    className="w-24 h-24 object-cover rounded-full border"
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </div>
 

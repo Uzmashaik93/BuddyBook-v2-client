@@ -109,7 +109,7 @@ function Profile() {
                 size={70}
               />
               <img
-                src={dummyImage}
+                src={profile.imageUrl || dummyImage}
                 alt="Profile"
                 className="w-64 h-64 object-cover mb-2"
               />

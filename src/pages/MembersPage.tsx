@@ -119,14 +119,14 @@ function MembersPage() {
             return (
               <div
                 key={profileObj.id}
-                className={`${colors.bg} ${colors.border} border-2 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden h-55 w-56 flex flex-col items-center p-2`} // Smaller card size
+                className={`${colors.bg} ${colors.border} border-2 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden h-58 w-56 flex flex-col items-center p-2`} // Smaller card size
               >
                 {/* Image Container */}
                 <div className="w-20 h-20 overflow-hidden rounded-full flex items-center justify-center">
-                  {profileObj.profileImage ? (
+                  {profileObj.imageUrl ? (
                     <img
                       className="w-full h-full object-cover"
-                      src={profileObj.profileImage}
+                      src={profileObj.imageUrl}
                       alt="Profile"
                     />
                   ) : (

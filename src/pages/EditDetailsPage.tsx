@@ -137,6 +137,7 @@ function EditProfilePage() {
         showCancel={true}
         form={form}
         onCancel={handleCancel}
+        heading={"Edit your profile"}
       />
     </div>
   );
