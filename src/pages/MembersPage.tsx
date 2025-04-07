@@ -65,6 +65,7 @@ function MembersPage() {
       })
       .then((response) => {
         const teamObject = response.data.team;
+
         setTeam(teamObject);
       });
     if (id) {
@@ -91,9 +92,6 @@ function MembersPage() {
           <h2 className="text-4xl font-bold text-black drop-shadow-lg">
             Team Name:{team?.teamName}
           </h2>
-          <h1 className="text-xs !mb-0 !text-gray-400 font-bold mt-1">
-            Created by {team?.createdBy}
-          </h1>
         </div>
       </div>
 
