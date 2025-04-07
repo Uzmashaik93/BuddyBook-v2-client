@@ -1,26 +1,44 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { Trash2, UserPen, UserPlus } from "lucide-react"; // Import icons
 import { useNavigate } from "react-router-dom";
-import { Users, Trash2, UserPen, UserPlus } from "lucide-react"; // Import icons
 import "../pages/TeamsPage.css";
 import Loader from "../components/Loader";
-import { Team } from "../types";
+import { Team, TeamInvite } from "../types";
 import { colorSets } from "../constants";
+import { AuthContext } from "../context/auth.context";
+import TeamsCard from "../components/TeamsCard";
 const env = import.meta.env.VITE_BASE_API_URL;
 
 function TeamsPage() {
   const [teams, setTeams] = useState<Team[]>([]);
 
   const [loading, setLoading] = useState(true); // New state to track loading
+  const [invites, setInvites] = useState<TeamInvite[]>([]);
 
   const navigate = useNavigate();
+
+  const { user, getToken } = useContext(AuthContext);
 
   // Fetch teams when the component mounts
   useEffect(() => {
     fetchTeams();
+    getInvites();
   }, []);
 
-  //used to populate the created by input field with the user name.
+  const getInvites = async () => {
+    try {
+      const response = await axios.get(`${env}/invites`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("auth")}`,
+        },
+      });
+      console.log(response.data);
+      setInvites(response.data.invites);
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
 
   // Function to fetch teams data from the API
   const fetchTeams = () => {
@@ -32,6 +50,7 @@ function TeamsPage() {
       })
       .then((response) => {
         const teamsObject = response.data;
+        console.log("Fetched teams:", teamsObject);
 
         setTeams(teamsObject.teams);
 
@@ -68,6 +87,27 @@ function TeamsPage() {
     }
   };
 
+  const handleInviteDecline = async (inviteId: string) => {
+    try {
+      const updatedData = {
+        status: "DECLINED",
+      };
+      const response = await axios.put(
+        `${env}/invites/${inviteId}`,
+        updatedData,
+        {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        }
+      );
+      console.log("Invite response:", response.data);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error declining invite:", error);
+    }
+  };
+
   // Show loading spinner while fetching data
   if (loading) {
     return (
@@ -98,53 +138,37 @@ function TeamsPage() {
               const colors = colorSets[index % colorSets.length];
 
               return (
-                <div
+                <TeamsCard
                   key={team.id}
-                  className={`rounded-lg p-6 border-2 shadow-lg transform transition-all hover:shadow-2xl transition-shadow duration-300 relative overflow-hidden ${colors.bg} ${colors.border}`}
-                >
-                  <div className="absolute inset-0 opacity-0 transition-opacity duration-300 hover:opacity-20"></div>
-                  <div className="flex justify-center mb-4 relative z-10">
-                    <Users className={`w-8 h-8 ${colors.icon}`} />
-                  </div>
-                  <h2 className="text-lg font-medium mb-2 text-gray-800 relative z-10">
-                    Team: {team.teamName}
-                  </h2>
-                  <p className="text-sm mb-4 relative z-10 text-gray-600">
-                    Created by: {team.createdBy.username}
-                  </p>
-                  <p className="text-sm mb-4 relative z-10 text-gray-800">
-                    {team.members ? Object.keys(team.members).length : 0}
-                    members
-                  </p>
-                  <button
-                    onClick={() => handleRequestAccess(team, "view")}
-                    className="text-sm border-1 border-gray-400 hover:text-gray-600 text-black font-bold py-1.5 px-3 rounded-full mb-4 transition duration-300 relative z-10"
-                  >
-                    View Team
-                  </button>
-
-                  {/* Edit and delete buttons */}
-                  <div className="flex justify-center space-x-4 relative z-10">
-                    <button
-                      onClick={() => navigate(`/teams/${team.id}/edit`)}
-                      className="text-xs bg-gray-300 hover:bg-gray-500 text-black font-bold py-1 px-3 rounded-full transition duration-300"
-                    >
-                      <UserPen className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => handleRequestAccess(team, "delete")}
-                      className="text-xs bg-red-300 hover:bg-red-500 text-white font-bold py-1 px-3 rounded-full transition duration-300"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => navigate(`/invite/${team.id}`)}
-                      className="text-xs bg-blue-400 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded-full transition duration-300"
-                    >
-                      <UserPlus className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
+                  team={team}
+                  colors={colors}
+                  showView={true}
+                  onViewTeam={() => {
+                    handleRequestAccess(team, "view");
+                  }}
+                  actions={
+                    <div className="flex justify-center space-x-4 relative z-10">
+                      <button
+                        onClick={() => navigate(`/teams/${team.id}/edit`)}
+                        className="text-xs bg-gray-300 hover:bg-gray-500 text-black font-bold py-1 px-3 rounded-full transition duration-300"
+                      >
+                        <UserPen className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleRequestAccess(team, "delete")}
+                        className="text-xs bg-red-300 hover:bg-red-500 text-white font-bold py-1 px-3 rounded-full transition duration-300"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => navigate(`/invite/${team.id}`)}
+                        className="text-xs bg-blue-400 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded-full transition duration-300"
+                      >
+                        <UserPlus className="w-4 h-4" />
+                      </button>
+                    </div>
+                  }
+                />
               );
             })}
           </div>
@@ -152,7 +176,46 @@ function TeamsPage() {
           <p className="text-center text-gray-500 mt-4">No teams available.</p>
         )}
 
-        {/* Modal for creating or editing a team */}
+        {/* Display the list of invites if there are any */}
+        {invites.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-2xl font-bold text-black drop-shadow-lg mb-4">
+              Invites
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+              {invites.map((invite, index) => {
+                const colors = colorSets[index % colorSets.length];
+                console.log("Invite:", invite);
+                return user && user.email === invite.invitedUserEmail ? (
+                  <TeamsCard
+                    key={invite.id}
+                    team={invite.team}
+                    colors={colors}
+                    showView={false}
+                    actions={
+                      <div className="flex justify-center space-x-4 relative z-10">
+                        <button
+                          onClick={() => {
+                            navigate(`/invite/${invite.teamId}/create`);
+                          }}
+                          className="text-xs bg-gray-300 hover:bg-gray-500 text-black font-bold py-1 px-3 rounded-full transition duration-300"
+                        >
+                          Accept
+                        </button>
+                        <button
+                          onClick={() => handleInviteDecline(invite.id)}
+                          className="text-xs bg-red-300 hover:bg-red-500 text-white font-bold py-1 px-3 rounded-full transition duration-300"
+                        >
+                          Decline
+                        </button>
+                      </div>
+                    }
+                  />
+                ) : null;
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
