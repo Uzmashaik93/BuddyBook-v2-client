@@ -15,6 +15,7 @@ import NonAuthPages from "./pages/NonAuthPages";
 import AboutPage from "./pages/AboutPage";
 import AuthPages from "./pages/AuthPages";
 import InivitePage from "./pages/InivitePage";
+import InvitesCreateProfile from "./pages/InvitesCreateProfile";
 
 const router = createBrowserRouter([
   {
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
         index: true,
         path: "/invite/:teamId",
         Component: InivitePage,
+      },
+      {
+        path: "/invite/:teamId/create",
+        Component: InvitesCreateProfile,
       },
     ],
   },
