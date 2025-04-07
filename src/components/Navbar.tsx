@@ -13,7 +13,7 @@ function Navbar() {
   const location = useLocation();
   const currentPath = location.pathname;
   return (
-    <div className="navbar-container flex justify-between items-center bg-white shadow-md px-6 py-3 top-0 w-full z-50">
+    <div className="navbar-container text-sm flex justify-between items-center bg-white shadow-md px-6 py-3 top-0 w-full z-50">
       {/* Logo */}
       <NavLink to="/">
         <img src={logo} alt="Logo" className="h-10 w-auto -rotate-10" />
@@ -21,6 +21,8 @@ function Navbar() {
 
       {/* Navigation Links */}
       <div className="flex items-center gap-6">
+        <h4>Welcome {user?.username}</h4>
+
         {currentPath !== "/" && (
           <NavLink
             to="/"
@@ -29,7 +31,7 @@ function Navbar() {
             <House
               className="transition-colors duration-200 group-hover:text-pink-500"
               color="currentColor"
-              size={22}
+              size={20}
             />
             <span className="font-medium">Home</span>
           </NavLink>
@@ -38,10 +40,10 @@ function Navbar() {
         {isAuthenticated && currentPath !== "/teams" && (
           <NavLink
             to="/teams"
-            className="flex items-center gap-2 text-gray-700 transition-colors duration-300 hover:text-pink-500 group"
+            className="flex items-center gap-0.5 text-gray-700 transition-colors duration-300 hover:text-pink-500 group"
           >
-            <UsersRound />
-            <span className="font-medium">Team</span>
+            <UsersRound size={18} />
+            <span className="font-medium">My Teams</span>
           </NavLink>
         )}
 
@@ -52,18 +54,18 @@ function Navbar() {
               navigate("/");
               console.log("Logged out");
             }}
-            className="flex items-center gap-2 text-gray-700 transition-colors duration-300 hover:text-pink-500 group"
+            className="flex text-sm items-center gap-0.5 text-gray-700 transition-colors duration-300 hover:text-pink-500 group"
           >
-            <LogOut />
+            <LogOut size={18} />
             <span className="font-medium">LogOut</span>
           </button>
         )}
 
         <NavLink
           to="/about"
-          className="flex items-center gap-2 text-gray-700 transition-colors duration-300 hover:text-pink-500 group"
+          className="flex items-center text-sm gap-0.5 text-gray-700 transition-colors duration-300 hover:text-pink-500 group"
         >
-          <Info />
+          <Info size={18} />
           <span className="font-medium">About</span>
         </NavLink>
       </div>
