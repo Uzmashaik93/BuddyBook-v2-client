@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export interface AuthUser {
   id: string;
@@ -76,6 +77,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   // Login Function
   const login = (token: string) => {
     localStorage.setItem("auth", token);
+    toast.success("User log in success!");
     fetchUser(); // Fetch user data after login
     setIsAuthenticated(true);
   };
@@ -83,6 +85,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   // Log Out Function
   const logout = () => {
     localStorage.removeItem("auth");
+    toast.success("User log out success!");
     setIsAuthenticated(false);
     setUser(undefined);
   };

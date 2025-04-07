@@ -1,5 +1,4 @@
 import { Users } from "lucide-react"; // Import icons
-import { useNavigate } from "react-router-dom";
 import { Team } from "../types";
 import { ReactNode } from "react";
 
@@ -10,7 +9,7 @@ interface TeamCardProps {
     border: string;
     icon: string;
   };
-  onViewTeam: () => void;
+  onViewTeam?: () => void;
   actions: ReactNode;
   showView: boolean;
 }
@@ -22,8 +21,6 @@ function TeamsCard({
   actions,
   showView,
 }: TeamCardProps) {
-  const navigate = useNavigate();
-
   return (
     <div
       key={team.id}
@@ -45,7 +42,7 @@ function TeamsCard({
       </p>
       {showView && (
         <button
-          onClick={() => onViewTeam()}
+          onClick={() => onViewTeam?.()}
           className="text-sm border-1 border-gray-400 hover:text-gray-600 text-black font-bold py-1.5 px-3 rounded-full mb-4 transition duration-300 relative z-10"
         >
           View Team

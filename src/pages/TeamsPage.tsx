@@ -8,6 +8,7 @@ import { Team, TeamInvite } from "../types";
 import { colorSets } from "../constants";
 import { AuthContext } from "../context/auth.context";
 import TeamsCard from "../components/TeamsCard";
+import { toast } from "react-hot-toast";
 const env = import.meta.env.VITE_BASE_API_URL;
 
 function TeamsPage() {
@@ -79,7 +80,7 @@ function TeamsPage() {
         .then(() => {
           navigate(`/teams`);
           fetchTeams(); // Refresh the teams list after deletion
-          alert("Team deleted successfully!");
+          toast.error("Team deleted successfully!");
         })
         .catch((error) => {
           console.log("Error", error);
@@ -102,6 +103,7 @@ function TeamsPage() {
         }
       );
       console.log("Invite response:", response.data);
+      toast.error("Inivite Declined");
       window.location.reload();
     } catch (error) {
       console.error("Error declining invite:", error);
@@ -196,7 +198,9 @@ function TeamsPage() {
                       <div className="flex justify-center space-x-4 relative z-10">
                         <button
                           onClick={() => {
-                            navigate(`/invite/${invite.teamId}/create`);
+                            navigate(
+                              `/team/${invite.team.id}/invite/${invite.id}/create`
+                            );
                           }}
                           className="text-xs bg-gray-300 hover:bg-gray-500 text-black font-bold py-1 px-3 rounded-full transition duration-300"
                         >

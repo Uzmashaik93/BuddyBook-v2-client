@@ -1,4 +1,5 @@
 import "./pages/TeamsPage.css";
+import { Toaster } from "react-hot-toast";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import TeamsPage from "./pages/TeamsPage";
@@ -79,8 +80,16 @@ const router = createBrowserRouter([
         path: "/invite/:teamId",
         Component: InivitePage,
       },
+    ],
+  },
+  {
+    path: "/team",
+    Component: AuthPages,
+    errorElement: <ErrorPage />,
+    children: [
       {
-        path: "/invite/:teamId/create",
+        index: true,
+        path: "/team/:teamId/invite/:inviteId/create",
         Component: InvitesCreateProfile,
       },
     ],
@@ -90,6 +99,30 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div>
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: "#1f2937", // Tailwind gray-800
+            color: "#fff",
+            borderRadius: "0.75rem",
+            padding: "1rem",
+          },
+          success: {
+            iconTheme: {
+              primary: "#22c55e", // green-500
+              secondary: "#ecfdf5", // green-50
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: "#ef4444", // red-500
+              secondary: "#fee2e2", // red-100
+            },
+          },
+        }}
+      />{" "}
       <RouterProvider router={router} />
     </div>
   );

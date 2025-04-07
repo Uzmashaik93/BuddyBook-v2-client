@@ -10,6 +10,7 @@ import { Member } from "../types";
 import { useContext } from "react";
 import { AuthContext } from "../context/auth.context";
 import ProfileForm from "../components/ProfileForm";
+import toast from "react-hot-toast";
 
 function CreateProfilePage() {
   const { teamId } = useParams();
@@ -68,10 +69,10 @@ function CreateProfilePage() {
           },
         }
       );
-      console.log("Success", response);
+      toast.success("Profile created successfully!");
       navigate(`/teams/${teamId}`);
     } catch (error) {
-      console.log("Error", error);
+      toast.error("Error creating profile");
     }
   };
 

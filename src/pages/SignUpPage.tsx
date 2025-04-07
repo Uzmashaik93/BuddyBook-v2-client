@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { User } from "../types";
 import axios from "axios";
+import toast from "react-hot-toast";
 const env = import.meta.env.VITE_BASE_API_URL;
 
 function SignUpPage() {
@@ -25,16 +26,15 @@ function SignUpPage() {
     console.log("User Data:", userData);
     try {
       const response = await axios.post(`${env}/auth/signup`, userData);
-      console.log(response.data);
+      toast.success("User sign up success!");
       navigate("/teams");
     } catch (error) {
-      console.error("Error creating user:", error);
-      alert("Failed to create user. Please try again.");
+      toast.error("User sign up fail!");
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-white flex justify-center items-center">
+    <div className="fixed inset-0 bg-white/10 backdrop-blur-xs flex justify-center items-center rounded-xl shadow-lg border border-white/20">
       <div className="form-new bg-gradient-to-r from-pink-100 to-blue-100 p-8 rounded-lg shadow-lg max-w-md w-full relative border-5 border-pink-300">
         <h1 className="text-2xl font-semibold text-center text-pink-600 mb-6">
           Sign Up Form

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Team } from "../types";
 const env = import.meta.env.VITE_BASE_API_URL;
+import { toast } from "react-hot-toast";
 
 function CreateTeamPage() {
   const navigate = useNavigate();
@@ -21,15 +22,12 @@ function CreateTeamPage() {
           Authorization: `Bearer ${localStorage.getItem("auth")}`,
         },
       });
-      alert("Team created successfully!");
 
-      // const teamId = response.data; // Get the new team's ID
-
-      // Redirect to the new team's page
-      navigate(`/teams`);
+      toast.success("Team Created Successfully!");
+      navigate("/teams");
     } catch (error) {
       console.error("Error creating team:", error);
-      alert("Failed to create team. Please try again.");
+      toast.error("Failed to create team!");
     }
   };
 

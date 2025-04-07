@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { Team } from "../types";
 import { AuthContext } from "../context/auth.context";
+import toast from "react-hot-toast";
 const env = import.meta.env.VITE_BASE_API_URL;
 
 function EditTeamPage() {
@@ -48,12 +49,11 @@ function EditTeamPage() {
       );
 
       console.log("Team updated successfully:", response.data);
-      alert("Team updated successfully!");
-
+      toast.success("Team edited successfully!");
       navigate(`/teams`);
     } catch (error) {
       console.error("Error updating team:", error);
-      alert("Failed to update team. Please try again.");
+      toast.error("Editing Fail!");
     }
   };
 

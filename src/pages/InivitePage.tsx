@@ -2,6 +2,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { TeamInvite } from "../types";
+import toast from "react-hot-toast";
 const env = import.meta.env.VITE_BASE_API_URL;
 
 function InivitePage() {
@@ -27,9 +28,10 @@ function InivitePage() {
         }
       );
       console.log("Invite sent:", response.data);
+      toast.success("Invite sent successfully!");
       navigate("/teams");
     } catch (error) {
-      console.error("Error sending invite:", error);
+      toast.error("User is already invited to the team");
     }
   };
 

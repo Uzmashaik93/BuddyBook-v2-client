@@ -43,7 +43,7 @@ function LogInPage() {
   };
 
   return (
-    <div className="fixed inset-0 bg-white flex justify-center items-center">
+    <div className="fixed inset-0 bg-white/10 backdrop-blur-xs flex justify-center items-center rounded-xl shadow-lg border border-white/20">
       <div className="form-new bg-gradient-to-r from-pink-100 to-blue-100 p-8 rounded-lg shadow-lg max-w-md w-full relative border-5 border-pink-300">
         <h1 className="text-2xl font-semibold text-center text-pink-600 mb-6">
           Log In Form
