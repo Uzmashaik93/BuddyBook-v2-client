@@ -9,17 +9,20 @@ import { useForm } from "react-hook-form";
 import { Member } from "../types";
 import { useContext } from "react";
 import { AuthContext } from "../context/auth.context";
+import ProfileForm from "../components/ProfileForm";
 
 function CreateProfilePage() {
   const { teamId } = useParams();
 
   const navigate = useNavigate();
 
+  const form = useForm<Member>();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Member>();
+  } = form;
+
   const { getToken } = useContext(AuthContext);
 
   // const [image, setImage] = useState(null);
@@ -79,128 +82,7 @@ function CreateProfilePage() {
       <div className="mr-auto">
         <BackButton text="Back to Team" to={`/teams/${teamId}`} />
       </div>
-      <div>
-        <form
-          className="form bg-gradient-to-r from-pink-100 to-blue-100"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <div className="new-profile-title">
-            <h2>
-              <span>Create your profile 😎</span>
-            </h2>
-          </div>
-          <div className="flex justify-evenly flex-wrap gap-35">
-            <div className="flex flex-col gap-15 w-2xs">
-              <div className="flex flex-col">
-                <label className="text-center">Hey, what’s your name?</label>
-                <input
-                  className="input"
-                  type="text"
-                  {...register("name", { required: true })}
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-center">Where are you from?</label>
-                <input
-                  className="input"
-                  type="text"
-                  {...register("place", { required: true })}
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-center">
-                  How many years young are you?
-                </label>
-                <input
-                  className="input"
-                  type="number"
-                  min="0"
-                  {...register("age", { required: true })}
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-center">Got any fun hobbies?</label>
-                <input
-                  className="input"
-                  type="text"
-                  {...register("hobbies", { required: true })}
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-center">Got a LinkedIn?</label>
-                <input
-                  className="input"
-                  type="text"
-                  {...register("linkedIn", { required: true })}
-                />
-              </div>
-            </div>
-
-            {/* right side container */}
-            <div className="flex flex-col gap-15 w-2xs">
-              <div className="flex flex-col">
-                <label className="text-center">
-                  If this course had a mascot, what would it be?
-                </label>
-                <input
-                  className="input"
-                  type="text"
-                  {...register("question1", { required: true })}
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-center">
-                  If your life had a theme song, what would it be?
-                </label>
-                <input
-                  className="input"
-                  type="text"
-                  {...register("question2", { required: true })}
-                />
-              </div>
-
-              {/* Custom Question Section */}
-              <div className="flex flex-col gap-15 w-2xs">
-                <div className="flex flex-col">
-                  <label className="text-center">
-                    Create Your Own Question:
-                    <input
-                      className="input w-70"
-                      type="text"
-                      {...register("customQuestion", { required: true })}
-                    />
-                  </label>
-                </div>
-              </div>
-
-              {/* <div className="flex flex-col">
-                <label className="text-center">Upload your picture</label>
-
-                <input className="input" type="file" onChange={handleImage} /> */}
-              {/* Image Preview */}
-              {/* {image && (
-                  <div className="flex justify-center mt-4">
-                    <img
-                      src={image}
-                      alt="my cloudinary image"
-                      className="w-24 h-24 object-cover rounded-full border"
-                    />
-                  </div>
-                )} */}
-              {/* </div> */}
-            </div>
-          </div>
-
-          <button className="button-confirm" type="submit">
-            Let's go
-          </button>
-        </form>
-      </div>
+      <ProfileForm onSubmit={onSubmit} form={form} />
     </div>
   );
 }
