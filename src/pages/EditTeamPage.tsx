@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import TeamForm from "../components/TeamForm";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { Team } from "../types";
+import { AuthContext } from "../context/auth.context";
 const env = import.meta.env.VITE_BASE_API_URL;
 
 function EditTeamPage() {
   const [teamData, setTeamData] = useState<Team>();
   const { teamId } = useParams();
-
+  const { getToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     axios
       .get(`${env}/teams/${teamId}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("auth")}`,
+          Authorization: `Bearer ${getToken()}`,
         },
       })
       .then((response) => {
@@ -41,7 +42,7 @@ function EditTeamPage() {
         updatedTeamData,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("auth")}`,
+            Authorization: `Bearer ${getToken()}`,
           },
         }
       );
