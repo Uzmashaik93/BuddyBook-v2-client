@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { API_URL } from "../config/api";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+const env = import.meta.env.VITE_BASE_API_URL;
 
 function ReactionButtons() {
   const { teamId, profileId } = useParams();
@@ -26,7 +26,7 @@ function ReactionButtons() {
 
   useEffect(() => {
     axios
-      .get(`${API_URL}/teams/${teamId}/members/${profileId}/reactions.json`)
+      .get(`${env}/teams/${teamId}/members/${profileId}/reactions.json`)
       .then((response) => {
         if (response.data) {
           const updatedCounts: Record<
@@ -63,7 +63,7 @@ function ReactionButtons() {
       [type]: { ...current, count: newCount },
     }));
 
-    const reactionUrl = `${API_URL}/teams/${teamId}/members/${profileId}/reactions/${type}/${current.id}.json`;
+    const reactionUrl = `${env}/teams/${teamId}/members/${profileId}/reactions/${type}/${current.id}.json`;
 
     axios
       .put(reactionUrl, { count: newCount })

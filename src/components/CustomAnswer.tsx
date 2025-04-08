@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 import axios from "axios";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 const env = import.meta.env.VITE_BASE_API_URL;
 
 interface CustomAnswerProps {
@@ -21,11 +22,11 @@ function CustomAnswer({
 }: CustomAnswerProps) {
   const [answer, setAnswer] = useState("");
 
-  const handleChange = (e) => {
+  const handleChange = (e: { target: { value: SetStateAction<string> } }) => {
     setAnswer(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     axios
       .post(

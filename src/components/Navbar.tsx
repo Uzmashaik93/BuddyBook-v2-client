@@ -1,5 +1,5 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { House, Info, LogOut, UserRound, UsersRound } from "lucide-react";
+import { House, Info, LogOut, UsersRound } from "lucide-react";
 
 import logo from "../assets/images/logo/BuddyBook-final.png";
 
