@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import axios from "axios";
 import { useState } from "react";
 const env = import.meta.env.VITE_BASE_API_URL;
@@ -13,14 +12,14 @@ interface CommentsProps {
   onRefresh: () => void;
 }
 
-function Comments({ teamId, profileId, user, onRefresh }: CommentsProps) {
+function Comments({ profileId, user, onRefresh }: CommentsProps) {
   const [comment, setComment] = useState("");
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setComment(event.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     axios

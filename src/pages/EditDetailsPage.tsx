@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { API_URL } from "../config/api";
 
 import BackButton from "../components/BackButton";
 import Loader from "../components/Loader";
@@ -51,38 +51,6 @@ function EditProfilePage() {
 
     fetchProfile();
   }, []);
-
-  // Convert image to Base64
-  // const handleFileChange = async (event) => {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     const formData = new FormData();
-  //     formData.append("file", file);
-  //     formData.append(
-  //       "upload_preset",
-  //       import.meta.env.VITE_UNSIGNED_UPLOAD_PRESET
-  //     );
-  //     formData.append("cloud_name", import.meta.env.VITE_CLOUD_NAME);
-
-  //     try {
-  //       const response = await axios.post(
-  //         `https://api.cloudinary.com/v1_1/${
-  //           import.meta.env.VITE_CLOUD_NAME
-  //         }/upload`,
-  //         formData
-  //       );
-  //       // After successful upload, store the image URL
-  //       setImage(response.data.secure_url);
-  //     } catch (error) {
-  //       console.error("Error uploading the file:", error);
-  //     }
-  //   }
-  // };
-
-  // Handle input change
-  // const handleChange = (event) => {
-  //   setProfile({ ...profile, [event.target.name]: event.target.value });
-  // };
 
   const handleCancel = () => {
     navigate(`/teams/${teamId}/profile/${profileId}`);

@@ -11,7 +11,11 @@ const settings = {
   slidesToScroll: 1,
 };
 
-function CardCarousel({ list }) {
+interface CardCarouselProps {
+  list: { answer: string; name: string }[];
+}
+
+function CardCarousel({ list }: CardCarouselProps) {
   return (
     <div
       className="bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 rounded-lg shadow-xl 
@@ -35,7 +39,11 @@ function CardCarousel({ list }) {
 
 export default CardCarousel;
 
-function SliderCard({ item }) {
+interface SliderCardProps {
+  item: { answer: string; name: string };
+}
+
+function SliderCard({ item }: SliderCardProps) {
   return (
     <div>
       <div className="backdrop-blur-sm rounded-xl transition-all duration-300 border border-purple-100">

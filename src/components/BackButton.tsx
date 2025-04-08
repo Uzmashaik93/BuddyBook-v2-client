@@ -1,8 +1,12 @@
-/* eslint-disable react/prop-types */
 import { ArrowBigLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-function BackButton({ text, to }) {
+interface BackButtonProps {
+  text: string;
+  to: string;
+}
+
+function BackButton({ text, to }: BackButtonProps) {
   const navigate = useNavigate();
 
   const handleClick = () => {

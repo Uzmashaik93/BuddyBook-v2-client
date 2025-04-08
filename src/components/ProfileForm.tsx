@@ -1,7 +1,6 @@
 import { UseFormReturn } from "react-hook-form";
 import { Member } from "../types";
 import axios from "axios";
-import { useState } from "react";
 
 interface ProfileFormProps {
   onSubmit: (data: Member) => void;
@@ -20,7 +19,7 @@ function ProfileForm({
   const { register, handleSubmit, setValue, watch } = form;
   const imageUrl = watch("imageUrl");
 
-  const handleImage = (event) => {
+  const handleImage = (event: { target: { files: (string | Blob)[] } }) => {
     const url = `https://api.cloudinary.com/v1_1/${
       import.meta.env.VITE_CLOUD_NAME
     }/upload`;

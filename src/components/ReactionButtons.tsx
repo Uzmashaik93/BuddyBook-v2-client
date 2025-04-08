@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "../config/api";
 import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function ReactionButtons() {
   const { teamId, profileId } = useParams();
@@ -27,10 +29,15 @@ function ReactionButtons() {
       .get(`${API_URL}/teams/${teamId}/members/${profileId}/reactions.json`)
       .then((response) => {
         if (response.data) {
-          const updatedCounts = {};
+          const updatedCounts: Record<
+            string,
+            { id: string | null; count: number }
+          > = {};
 
           Object.entries(response.data).forEach(([type, data]) => {
-            const entry = Object.entries(data)[0];
+            const entry = Object.entries(
+              data as Record<string, { count: number }>
+            )[0];
             if (entry) {
               const [id, details] = entry;
               updatedCounts[type] = { id, count: details.count };
@@ -45,7 +52,9 @@ function ReactionButtons() {
       });
   }, [teamId, profileId]);
 
-  const handleReaction = (type) => {
+  type ReactionType = keyof typeof counts;
+
+  const handleReaction = (type: ReactionType) => {
     const current = counts[type];
     const newCount = (current?.count || 0) + 1;
 
@@ -59,6 +68,7 @@ function ReactionButtons() {
     axios
       .put(reactionUrl, { count: newCount })
       .then((response) => {
+        toast.success("Reaction recorded!");
         console.log("Reaction updated");
       })
       .catch((e) => console.log("Error updating reactions", e));
@@ -70,11 +80,11 @@ function ReactionButtons() {
         {reactions.map((reaction, index) => (
           <button
             key={index}
-            onClick={() => handleReaction(reaction.type)}
+            onClick={() => handleReaction(reaction.type as ReactionType)}
             className="before:hidden hover:before:flex before:justify-center before:items-center before:h-4 before:text-[.6rem] before:px-1 before:content-[attr(data-label)] before:bg-gray-800 before:text-white before:bg-opacity-50 before:absolute before:-top-6 before:rounded-lg hover:-translate-y-2 cursor-pointer hover:scale-110 bg-white rounded-full p-2 px-3"
             data-label={reaction.label}
           >
-            {reaction.emoji} {counts[reaction.type]?.count || 0}
+            {reaction.emoji} {counts[reaction.type as ReactionType]?.count || 0}
           </button>
         ))}
       </div>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 const env = import.meta.env.VITE_BASE_API_URL;
