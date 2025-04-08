@@ -8,11 +8,6 @@ const teamMembers = [
     github: "https://github.com/Uzmashaik93",
     linkedin: "https://www.linkedin.com/in/shaik-uzma/",
   },
-  {
-    name: "Julia Solias",
-    github: "https://github.com/juliasohu",
-    linkedin: "https://www.linkedin.com/in/julia-solias-huelamo/",
-  },
 ];
 
 function AboutPage() {
@@ -23,8 +18,10 @@ function AboutPage() {
           <div className="text-center mb-8">
             <h2 className="text-4xl font-bold mb-8">About Page</h2>
             <p className="text-lg mb-4">
-              We created BuddyBook as a way to keep in touch and share good
-              messages and positivity with your colleagues. <br />
+              BuddyBook-V2 is an app created as a way to keep in touch and share
+              good messages and positivity with your colleagues.Built using
+              Typescript and Prisma and inspired with our initial app Buddy Book
+              built by me and Julia. <br />
               <br /> Go ahead and create your team & profile so that you can
               stay in touch! 😊
             </p>
@@ -32,8 +29,8 @@ function AboutPage() {
             <img src={logo} className="mx-auto mb-4 w-32" />
 
             <p className="text-lg">
-              This page was created by Uzma Shaik and Julia Solias. <br />
-              You'll find our contact details below.
+              This page was created by Uzma Shaik. <br />
+              You'll find my contact details below.
             </p>
           </div>
           <div className="flex flex-wrap justify-center gap-6">
