@@ -14,12 +14,7 @@ const env = import.meta.env.VITE_BASE_API_URL;
 
 function EditProfilePage() {
   const form = useForm<Member>();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = form;
+  const { reset } = form;
 
   const { teamId, profileId } = useParams();
   const navigate = useNavigate();

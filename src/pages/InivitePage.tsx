@@ -12,7 +12,7 @@ function InivitePage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<TeamInvite>();
 
   const onSubmit = async (data: TeamInvite) => {
     try {
@@ -47,9 +47,9 @@ function InivitePage() {
               type="text"
               placeholder="Enter email address"
               className="mt-2 p-2 w-full border-2 border-black bg-gray-100 border-gray-30 rounded-md text-center"
-              {...register("inviteEmail", { required: true })}
+              {...register("invitedUserEmail", { required: true })}
             />
-            {errors.inviteEmail && <span>This field is required</span>}
+            {errors.invitedUserEmail && <span>This field is required</span>}
           </div>
 
           {/* Action buttons */}

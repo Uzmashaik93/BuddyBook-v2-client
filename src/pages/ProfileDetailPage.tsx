@@ -79,17 +79,11 @@ function Profile() {
 
   //if profile has custom answers then map through the list
 
-  const customAnswers = profile.customAnswers
-    ? Object.keys(profile.customAnswers).map(
-        (key) => profile.customAnswers[key]
-      )
-    : [];
+  const customAnswers = profile.customAnswers ?? [];
 
   //if profile has comments then map through the list
 
-  const comments = profile.comments
-    ? Object.keys(profile.comments).map((key) => profile.comments[key])
-    : [];
+  const comments = profile.comments ?? [];
 
   return (
     <div className="profile-page p-4 md:p-8">
@@ -125,11 +119,7 @@ function Profile() {
               </h1>
             </div>
 
-            <ReactionButtons
-              className="reaction-buttons"
-              teamId={teamId}
-              profileId={profileId}
-            />
+            <ReactionButtons />
 
             <div className="mt-5">
               <a
@@ -220,8 +210,8 @@ function Profile() {
             </div>
             <div className="flex justify-start w-full ml-3">
               <CustomAnswer
-                teamId={teamId}
-                profileId={profileId}
+                teamId={teamId || ""}
+                profileId={profileId || ""}
                 user={user}
                 onRefresh={() => getProfile()}
               />
@@ -237,8 +227,8 @@ function Profile() {
           {/* Right half */}
           <div className="w-full lg:w-1/2">
             <Comments
-              teamId={teamId}
-              profileId={profileId}
+              teamId={teamId || ""}
+              profileId={profileId || ""}
               user={user}
               onRefresh={() => getProfile()}
             />

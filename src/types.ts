@@ -29,6 +29,7 @@ export interface Member {
     question2: string
     invites: TeamInvite[]
     imageUrl: string
+    userId: string
 }
 
 enum InviteStatus {

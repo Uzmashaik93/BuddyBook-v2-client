@@ -2,24 +2,17 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
 import { SetStateAction, useState } from "react";
+import { AuthUser } from "../context/auth.context";
 const env = import.meta.env.VITE_BASE_API_URL;
 
 interface CustomAnswerProps {
   teamId: string;
   profileId: string;
-  user: {
-    email: string;
-    displayName: string;
-  };
+  user?: AuthUser;
   onRefresh: () => void;
 }
 
-function CustomAnswer({
-  teamId,
-  profileId,
-  user,
-  onRefresh,
-}: CustomAnswerProps) {
+function CustomAnswer({ profileId, user, onRefresh }: CustomAnswerProps) {
   const [answer, setAnswer] = useState("");
 
   const handleChange = (e: { target: { value: SetStateAction<string> } }) => {
@@ -32,8 +25,8 @@ function CustomAnswer({
       .post(
         `${env}/custom/member/${profileId}`,
         {
-          email: user.email,
-          name: user.displayName,
+          email: user?.email,
+          name: user?.username,
           answer,
         },
         {

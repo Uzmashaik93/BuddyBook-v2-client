@@ -54,24 +54,23 @@ function ReactionButtons() {
 
   type ReactionType = keyof typeof counts;
 
-  const handleReaction = (type: ReactionType) => {
-    const current = counts[type];
-    const newCount = (current?.count || 0) + 1;
+  const handleReaction = async (type: ReactionType) => {
+    try {
+      const current = counts[type];
+      const newCount = (current?.count || 0) + 1;
 
-    setCounts((prevCounts) => ({
-      ...prevCounts,
-      [type]: { ...current, count: newCount },
-    }));
+      setCounts((prevCounts) => ({
+        ...prevCounts,
+        [type]: { ...current, count: newCount },
+      }));
 
-    const reactionUrl = `${env}/teams/${teamId}/members/${profileId}/reactions/${type}/${current.id}.json`;
+      const reactionUrl = `${env}/teams/${teamId}/members/${profileId}/reactions/${type}/${current.id}.json`;
 
-    axios
-      .put(reactionUrl, { count: newCount })
-      .then((response) => {
-        toast.success("Reaction recorded!");
-        console.log("Reaction updated");
-      })
-      .catch((e) => console.log("Error updating reactions", e));
+      await axios.put(reactionUrl, { count: newCount });
+      toast.success("Reaction recorded!");
+    } catch (error) {
+      toast.error("Reaction not recorded!");
+    }
   };
 
   return (

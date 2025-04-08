@@ -10,5 +10,7 @@
     "module": "esnext",      /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', 'esnext', 'node12', 'nodenext'. */
     "lib": ["es2020", "dom", "dom.iterable", "scripthost"], /* Specify library files to be included in the compilation. */
     "outDir": "./dist",        /* Redirect output structure to the directory. */
-    "rootDir": "./src",   }
+    "rootDir": "./src",   
+    
+  }
 }

@@ -1,14 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
+import { AuthUser } from "../context/auth.context";
 const env = import.meta.env.VITE_BASE_API_URL;
 
 interface CommentsProps {
   teamId: string;
   profileId: string;
-  user: {
-    displayName: string;
-    email: string;
-  };
+  user?: AuthUser;
   onRefresh: () => void;
 }
 
@@ -27,7 +25,7 @@ function Comments({ profileId, user, onRefresh }: CommentsProps) {
         `${env}/comments/member/${profileId}`,
         {
           comment,
-          name: user.displayName,
+          name: user?.username,
         },
         {
           headers: {

@@ -17,7 +17,7 @@ function CreateTeamPage() {
       console.log("Team Data:", teamData);
 
       // Make API call using async/await
-      const response = await axios.post(`${env}/teams`, teamData, {
+      await axios.post(`${env}/teams`, teamData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("auth")}`,
         },

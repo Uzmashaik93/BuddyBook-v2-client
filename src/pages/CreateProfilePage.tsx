@@ -19,17 +19,12 @@ function CreateProfilePage() {
   const navigate = useNavigate();
 
   const form = useForm<Member>();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = form;
 
   const { getToken } = useContext(AuthContext);
 
   const onSubmit = async (data: Member) => {
     try {
-      const response = await axios.post(
+      await axios.post(
         `${env}/team/${teamId}/member`,
         {
           ...data,

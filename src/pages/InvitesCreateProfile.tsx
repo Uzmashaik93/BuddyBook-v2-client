@@ -10,11 +10,7 @@ const env = import.meta.env.VITE_BASE_API_URL;
 
 function InvitesCreateProfile() {
   const form = useForm<Member>();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = form;
+
   const { teamId, inviteId } = useParams();
   const navigate = useNavigate();
   const { getToken } = useContext(AuthContext);
@@ -69,7 +65,11 @@ function InvitesCreateProfile() {
       <div className="mr-auto">
         <BackButton text="Back to Team" to={`/teams/${teamId}`} />
       </div>
-      <ProfileForm onSubmit={onSubmit} form={form} />
+      <ProfileForm
+        onSubmit={onSubmit}
+        form={form}
+        heading={"Create your profile"}
+      />
     </div>
   );
 }
