@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { User } from "../types";
@@ -45,7 +46,7 @@ function SignUpPage() {
               type="text"
               placeholder="Enter your name"
               className="mt-2 p-2 w-full border-2 border-black bg-gray-100 border-gray-30 rounded-md text-center"
-              {...register("userName", { required: true })}
+              {...register("username", { required: true })}
             />
             {errors.username && <span>This field is required</span>}
           </div>

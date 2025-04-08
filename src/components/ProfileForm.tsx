@@ -19,7 +19,11 @@ function ProfileForm({
   const { register, handleSubmit, setValue, watch } = form;
   const imageUrl = watch("imageUrl");
 
-  const handleImage = (event: { target: { files: (string | Blob)[] } }) => {
+  const handleImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files || event.target.files.length === 0) {
+      console.error("No file selected");
+      return;
+    }
     const url = `https://api.cloudinary.com/v1_1/${
       import.meta.env.VITE_CLOUD_NAME
     }/upload`;

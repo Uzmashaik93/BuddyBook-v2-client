@@ -1,7 +1,11 @@
-/* eslint-disable react/prop-types */
 import "../components/Comments.css";
 
-function CommentsCard({ list }) {
+interface Comment {
+  comment: string;
+  name: string;
+}
+
+function CommentsCard({ list }: { list: Comment[] }) {
   return (
     <div className="flex flex-col justify-evenly">
       <div className="chat">
