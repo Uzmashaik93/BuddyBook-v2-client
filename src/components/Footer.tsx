@@ -1,5 +1,6 @@
 import { Github } from "lucide-react";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
   return (
@@ -7,9 +8,14 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2  gap-8 mb-2">
           <div>
-            <h3 className="text-lg font-bold mb-4 flex justify-evenly">
+            <h3 className="text-lg font-bold mb-4 flex gap-2 justify-center">
               Buddy Book
-              <Github className="hover:text-pink-400" />
+              <a
+                href="https://github.com/Uzmashaik93/BuddyBook-v2-client"
+                target="_blank"
+              >
+                <Github className="hover:text-pink-400" />
+              </a>
             </h3>
             <p className="text-gray-700">
               Your digital slambook to create and share memories with friends.

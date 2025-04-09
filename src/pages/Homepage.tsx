@@ -4,9 +4,20 @@ import logo from "../assets/images/logo/BuddyBook-final.png";
 import Features from "../components/Features";
 import { features, steps } from "../constants";
 import HowItWorks from "../components/HowItWorks";
+import { useContext } from "react";
+import { AuthContext } from "../context/auth.context";
 
 function Homepage() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useContext(AuthContext);
+
+  const handleClick = () => {
+    if (isAuthenticated) {
+      navigate("/teams");
+    } else {
+      navigate("/signup");
+    }
+  };
 
   return (
     <div className="m-10 p-8 flex justify-center items-center ">
@@ -21,18 +32,14 @@ function Homepage() {
           your buddies with our modern take on the classic slambook.
         </p>
         <div className="flex flex-col justify-center sm:flex-row gap-4">
-          <a
-            href="#"
-            className="bg-white-400 hover:text-pink-600 border-1 border-pink-500 text-pink-400 font-bold py-3 px-6 rounded-full transition duration-300 text-center"
+          <button
+            onClick={handleClick}
+            className="bg-white-400 hover:text-pink-600 border-1 border-pink-500
+            text-pink-400 font-bold py-3 px-6 rounded-full transition
+            duration-300 text-center"
           >
-            Create Your Slambook
-          </a>
-          <a
-            href="#"
-            className="bg-white border-1 hover:text-pink-500 border-black text-black font-bold py-3 px-6 rounded-full hover:shadow-md transition duration-300 text-center"
-          >
-            Take a Tour
-          </a>
+            {isAuthenticated ? "Create Your Memories" : "Sign up / Log in"}
+          </button>
         </div>
         <div className="flex justify-center mb-4"></div>
         <Features features={features} />
