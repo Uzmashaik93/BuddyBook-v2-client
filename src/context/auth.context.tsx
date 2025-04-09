@@ -77,7 +77,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   // Login Function
   const login = (token: string) => {
     localStorage.setItem("auth", token);
-    toast.success("User log in success!");
+    toast.success("User logged in !");
     fetchUser(); // Fetch user data after login
     setIsAuthenticated(true);
   };
@@ -85,7 +85,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   // Log Out Function
   const logout = () => {
     localStorage.removeItem("auth");
-    toast.success("User logged out success!");
+    toast.success("User logged out !");
     setIsAuthenticated(false);
     setUser(undefined);
   };

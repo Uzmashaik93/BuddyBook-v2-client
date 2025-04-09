@@ -4,6 +4,7 @@ import { User } from "../types";
 import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../context/auth.context";
+import toast from "react-hot-toast";
 const env = import.meta.env.VITE_BASE_API_URL;
 
 function LogInPage() {
@@ -30,12 +31,12 @@ function LogInPage() {
         login(response.data.authToken);
         navigate("/teams");
       } else {
-        alert("Login failed. Please check your credentials.");
+        toast.error("Log in failed,please check your credentials");
         return;
       }
     } catch (error) {
       console.error("Error Logging in:", error);
-      alert("Failed to create user. Please try again.");
+      toast.error("LogIn failed!");
     }
   };
 
