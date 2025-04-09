@@ -1,3 +1,5 @@
+import { Feature, Step } from "./types";
+
 export const colorSets = [
     {
         bg: "bg-yellow-100",
@@ -86,4 +88,52 @@ export const colorSetsMembers = [
     { bg: "bg-teal-100", border: "border-teal-200", icon: "text-teal-400" },
     { bg: "bg-teal-50", border: "border-teal-100", icon: "text-teal-500" },
     { bg: "bg-cyan-100", border: "border-cyan-200", icon: "text-cyan-400" },
+];
+
+export const features: Feature[] = [
+    {
+        icon: "✏️",
+        title: "Customizable Questions",
+        description: "Create your own unique questions along with some pre defined questions."
+    },
+    {
+        icon: "🔒",
+        title: "Private Sharing",
+        description: "Share your slambook with only the friends you choose through secure invites."
+    },
+    {
+        icon: "📱",
+        title: "Mobile Friendly",
+        description: "Access and update your slambook from any device, anytime, anywhere."
+    },
+
+
+    {
+        icon: "🔔",
+        title: "Notifications",
+        description: "Your friend gets notified when you send an invite to your team."
+    }
+];
+
+export const steps: Step[] = [
+    {
+        number: 1,
+        title: "Create Account",
+        description: "Sign up for free and start your journey."
+    },
+    {
+        number: 2,
+        title: "Create your team",
+        description: "Choose a name and create your team."
+    },
+    {
+        number: 3,
+        title: "Invite Friends",
+        description: "Invite your friends via email."
+    },
+    {
+        number: 4,
+        title: "Collect Memories",
+        description: "Create lasting memories together."
+    }
 ];

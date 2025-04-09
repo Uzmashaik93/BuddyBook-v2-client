@@ -60,3 +60,16 @@ export interface CustomAnswer {
     email: string
     name: string
 }
+
+
+export interface Feature {
+    icon: string;
+    title: string;
+    description: string;
+}
+
+export interface Step {
+    number: number;
+    title: string;
+    description: string;
+}

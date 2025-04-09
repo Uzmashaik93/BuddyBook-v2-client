@@ -1,35 +1,43 @@
 import { useNavigate } from "react-router-dom";
 
 import logo from "../assets/images/logo/BuddyBook-final.png";
+import Features from "../components/Features";
+import { features, steps } from "../constants";
+import HowItWorks from "../components/HowItWorks";
 
 function Homepage() {
   const navigate = useNavigate();
 
   return (
-    <div className="mt-8 p-8 flex justify-center items-center">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full md:w-3/5 ">
-        <h1 className="text-5xl font-bold text-pastelPink mb-4 text-center">
-          Welcome to BuddyBook
+    <div className="m-10 p-8 flex justify-center items-center ">
+      <div className="bg-white/10 backdrop-blur-2xs rounded-lg p-8 min-w-screen md:w-3/5 ">
+        <h1 className="text-xl md:text-4xl font-bold text-pastelPink mb-4 text-center drop-shadow-lg">
+          Connect With Friends Through the Digital Slambook Experience
         </h1>
-        <img src={logo} className="mx-auto mb-4 w-32" />
+        <img src={logo} className="mx-auto mb-4 w-32 drop-shadow-lg" />
 
-        <p className="text-gray-700 mb-6 text-center">
-          A place to collect thoughts, memories, and messages from friends. Join
-          in and leave your mark!
+        <p className="text-gray-700 mb-6 text-center drop-shadow-md">
+          Create memories, ask fun questions, and learn surprising things about
+          your buddies with our modern take on the classic slambook.
         </p>
-
-        <div className="flex justify-center mb-4">
-          <button
-            onClick={() => navigate("/signup")}
-            className="text-violet-500 border border-violet-500 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group"
+        <div className="flex flex-col justify-center sm:flex-row gap-4">
+          <a
+            href="#"
+            className="bg-white-400 hover:text-pink-600 border-1 border-pink-500 text-pink-400 font-bold py-3 px-6 rounded-full transition duration-300 text-center"
           >
-            <span className="bg-violet-500 shadow-violet-500 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
-            Get Started
-          </button>
+            Create Your Slambook
+          </a>
+          <a
+            href="#"
+            className="bg-white border-1 hover:text-pink-500 border-black text-black font-bold py-3 px-6 rounded-full hover:shadow-md transition duration-300 text-center"
+          >
+            Take a Tour
+          </a>
         </div>
-        <p className="font-handwriting text-sm text-vibrantPurple text-center">
-          Created by Uzma Shaik & Julia Solias 💌
-        </p>
+        <div className="flex justify-center mb-4"></div>
+        <Features features={features} />
+        <div className="flex justify-center mb-4"></div>
+        <HowItWorks steps={steps} />
       </div>
     </div>
   );
