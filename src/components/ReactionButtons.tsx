@@ -1,91 +1,102 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { AuthContext } from "../context/auth.context";
+
 const env = import.meta.env.VITE_BASE_API_URL;
+
+const reactions = [
+  { emoji: "👏🏻", label: "Cheer", type: "cheer" },
+  { emoji: "❤️", label: "Heart", type: "heart" },
+  { emoji: "🎉", label: "Celebrate", type: "celebrate" },
+  { emoji: "😊", label: "Smile", type: "smile" },
+  { emoji: "✨", label: "Appreciate", type: "appreciate" },
+];
 
 function ReactionButtons() {
   const { teamId, profileId } = useParams();
-
-  const reactions = [
-    { emoji: "👏🏻", label: "Cheer", type: "cheer" },
-    { emoji: "❤️", label: "Heart", type: "heart" },
-    { emoji: "🎉", label: "Celebrate", type: "celebrate" },
-    { emoji: "😊", label: "Smile", type: "smile" },
-    { emoji: "✨", label: "Appreciate", type: "appreciate" },
-  ];
-
-  const [counts, setCounts] = useState({
-    heart: { id: null, count: 0 },
-    cheer: { id: null, count: 0 },
-    celebrate: { id: null, count: 0 },
-    appreciate: { id: null, count: 0 },
-    smile: { id: null, count: 0 },
-  });
+  const { getToken } = useContext(AuthContext);
+  const [counts, setCounts] = useState<Record<string, number>>({});
+  const [userReaction, setUserReaction] = useState<string | null>(null);
 
   useEffect(() => {
-    axios
-      .get(`${env}/teams/${teamId}/members/${profileId}/reactions.json`)
-      .then((response) => {
-        if (response.data) {
-          const updatedCounts: Record<
-            string,
-            { id: string | null; count: number }
-          > = {};
+    const fetchReactions = async () => {
+      if (!teamId || !profileId) return;
 
-          Object.entries(response.data).forEach(([type, data]) => {
-            const entry = Object.entries(
-              data as Record<string, { count: number }>
-            )[0];
-            if (entry) {
-              const [id, details] = entry;
-              updatedCounts[type] = { id, count: details.count };
-            }
-          });
+      try {
+        const res = await axios.get(`${env}/reactions/${teamId}/${profileId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("auth")}`,
+          },
+        });
+        setCounts(res.data.counts || {});
+        setUserReaction(res.data.userReaction);
+      } catch (err) {
+        console.error("Error fetching reactions", err);
+      }
+    };
 
-          setCounts((prev) => ({ ...prev, ...updatedCounts }));
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching reactions", error);
-      });
+    fetchReactions();
   }, [teamId, profileId]);
 
-  type ReactionType = keyof typeof counts;
+  const handleReaction = async (type: string) => {
+    if (!teamId || !profileId) return;
 
-  const handleReaction = async (type: ReactionType) => {
     try {
-      const current = counts[type];
-      const newCount = (current?.count || 0) + 1;
+      const response = await axios.post(
+        `${env}/reactions/${profileId}`,
+        {
+          type,
+          teamId,
+          profileId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        }
+      );
+      console.log("Reactions response:", response);
 
-      setCounts((prevCounts) => ({
-        ...prevCounts,
-        [type]: { ...current, count: newCount },
-      }));
+      // Optimistic UI update
+      setCounts((prev) => {
+        const updatedCounts = { ...prev };
 
-      const reactionUrl = `${env}/teams/${teamId}/members/${profileId}/reactions/${type}/${current.id}.json`;
+        // Increase the count for the new reaction
+        updatedCounts[type] = (updatedCounts[type] || 0) + 1;
 
-      await axios.put(reactionUrl, { count: newCount });
-      toast.success("Reaction recorded!");
-    } catch (error) {
-      toast.error("Reaction not recorded!");
+        return updatedCounts;
+      });
+
+      setUserReaction(type);
+      toast.success("Reaction sent!");
+    } catch (err) {
+      console.error("Failed to send reaction", err);
+      toast.error("Failed to react");
     }
   };
 
   return (
     <div className="flex justify-center mt-0 mb-4">
       <div className="flex justify-center items-center text-xl shadow-xl z-10 bg-white gap-1.5 p-1 pl-0.5 pr-1 rounded-xl">
-        {reactions.map((reaction, index) => (
-          <button
-            key={index}
-            onClick={() => handleReaction(reaction.type as ReactionType)}
-            className="before:hidden hover:before:flex before:justify-center before:items-center before:h-4 before:text-[.6rem] before:px-1 before:content-[attr(data-label)] before:bg-gray-800 before:text-white before:bg-opacity-50 before:absolute before:-top-6 before:rounded-lg hover:-translate-y-2 cursor-pointer hover:scale-110 bg-white rounded-full p-2 px-3"
-            data-label={reaction.label}
-          >
-            {reaction.emoji} {counts[reaction.type as ReactionType]?.count || 0}
-          </button>
-        ))}
+        {reactions.map((reaction, index) => {
+          const isActive = userReaction === reaction.type;
+
+          return (
+            <button
+              key={index}
+              onClick={() => handleReaction(reaction.type)}
+              className={`relative hover:-translate-y-2 hover:scale-110 transition cursor-pointer rounded-full p-2 px-3 ${
+                isActive ? "bg-blue-100 text-blue-700" : "bg-white"
+              }`}
+              data-label={reaction.label}
+            >
+              <span className="pointer-events-none">{reaction.emoji}</span>{" "}
+              <span className="text-xs">{counts[reaction.type] || 0}</span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
