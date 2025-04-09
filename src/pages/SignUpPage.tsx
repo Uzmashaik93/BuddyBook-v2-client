@@ -24,7 +24,6 @@ function SignUpPage() {
     };
 
     // Replace with actual API call to create a new user
-    console.log("User Data:", userData);
     try {
       await axios.post(`${env}/auth/signup`, userData);
       toast.success("User sign up success!");

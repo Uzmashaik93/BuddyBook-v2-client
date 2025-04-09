@@ -27,10 +27,10 @@ function InivitePage() {
           },
         }
       );
-      console.log("Invite sent:", response.data);
       toast.success("Invite sent successfully!");
       navigate("/teams");
     } catch (error) {
+      console.error("Error", error);
       toast.error("User is already invited to the team");
     }
   };

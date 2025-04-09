@@ -14,7 +14,6 @@ function CreateTeamPage() {
       const teamName = data.teamName;
 
       const teamData = { teamName };
-      console.log("Team Data:", teamData);
 
       // Make API call using async/await
       await axios.post(`${env}/teams`, teamData, {

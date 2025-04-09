@@ -10,6 +10,7 @@ import "../pages/CreateProfilePage.css";
 import { useForm } from "react-hook-form";
 import { Member } from "../types";
 import ProfileForm from "../components/ProfileForm";
+import toast from "react-hot-toast";
 const env = import.meta.env.VITE_BASE_API_URL;
 
 function EditProfilePage() {
@@ -34,7 +35,6 @@ function EditProfilePage() {
             },
           }
         );
-        console.log("Fetched profile:", response.data);
         reset(response.data.member);
         // Keep the existing image
       } catch (error) {
@@ -75,7 +75,7 @@ function EditProfilePage() {
           },
         }
       );
-      console.log("Profile updated successfully");
+      toast.success("Profile updated");
       navigate(`/teams/${teamId}/profile/${profileId}`);
     } catch (error) {
       console.error("Error updating profile", error);

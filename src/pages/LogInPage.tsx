@@ -24,11 +24,8 @@ function LogInPage() {
       password: data.password,
     };
 
-    // Replace with actual API call to create a new user
-    console.log("User Data:", userData);
     try {
       const response = await axios.post(`${env}/auth/login`, userData);
-      console.log(response.data);
       if (response.data.authToken) {
         login(response.data.authToken);
         navigate("/teams");

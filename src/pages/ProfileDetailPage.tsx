@@ -36,7 +36,6 @@ function Profile() {
           },
         }
       );
-      console.log("Fetched profile:", response.data);
 
       setProfile(response.data.member);
     } catch (e) {

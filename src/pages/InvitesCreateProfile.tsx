@@ -6,6 +6,7 @@ import axios from "axios";
 import BackButton from "../components/BackButton";
 import { useContext } from "react";
 import { AuthContext } from "../context/auth.context";
+import toast from "react-hot-toast";
 const env = import.meta.env.VITE_BASE_API_URL;
 
 function InvitesCreateProfile() {
@@ -30,7 +31,6 @@ function InvitesCreateProfile() {
         }
       );
       await updateInviteStatus();
-      console.log("Profile created:", response.data);
       navigate("/teams");
     } catch (error) {
       console.error("Error creating profile:", error);
@@ -42,16 +42,12 @@ function InvitesCreateProfile() {
       status: "ACCEPTED",
     };
     try {
-      const response = await axios.put(
-        `${env}/invites/${inviteId}`,
-        updatedData,
-        {
-          headers: {
-            Authorization: `Bearer ${getToken()}`,
-          },
-        }
-      );
-      console.log("Invite status updated:", response.data);
+      await axios.put(`${env}/invites/${inviteId}`, updatedData, {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
+      toast.success("Invite Accepted");
       navigate("/teams");
     } catch (error) {
       console.error("Error updating invite status:", error);

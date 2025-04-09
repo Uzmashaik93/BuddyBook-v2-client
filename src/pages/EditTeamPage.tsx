@@ -21,7 +21,6 @@ function EditTeamPage() {
         },
       })
       .then((response) => {
-        console.log("Fetched teams:", response.data);
         setTeamData(response.data.team);
       })
       .catch((error) => {
@@ -38,17 +37,12 @@ function EditTeamPage() {
         timestamp: new Date().toLocaleString(),
       };
 
-      const response = await axios.put(
-        `${env}/teams/${teamId}`,
-        updatedTeamData,
-        {
-          headers: {
-            Authorization: `Bearer ${getToken()}`,
-          },
-        }
-      );
+      await axios.put(`${env}/teams/${teamId}`, updatedTeamData, {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
 
-      console.log("Team updated successfully:", response.data);
       toast.success("Team edited successfully!");
       navigate(`/teams`);
     } catch (error) {

@@ -34,7 +34,6 @@ function TeamsPage() {
           Authorization: `Bearer ${localStorage.getItem("auth")}`,
         },
       });
-      console.log(response.data);
       setInvites(response.data.invites);
     } catch (error) {
       console.log("Error", error);
@@ -51,7 +50,6 @@ function TeamsPage() {
       })
       .then((response) => {
         const teamsObject = response.data;
-        console.log("Fetched teams:", teamsObject);
 
         setTeams(teamsObject.teams);
 
@@ -65,8 +63,6 @@ function TeamsPage() {
 
   const handleRequestAccess = (team: Team, action: "view" | "delete") => {
     if (action === "view") {
-      console.log("Team ID:", team);
-
       navigate(`/teams/${team.id}`);
     }
 
@@ -102,7 +98,6 @@ function TeamsPage() {
           },
         }
       );
-      console.log("Invite response:", response.data);
       toast.error("Inivite Declined");
       window.location.reload();
     } catch (error) {
@@ -187,7 +182,6 @@ function TeamsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
               {invites.map((invite, index) => {
                 const colors = colorSets[index % colorSets.length];
-                console.log("Invite:", invite);
                 return user && user.email === invite.invitedUserEmail ? (
                   <TeamsCard
                     key={invite.id}

@@ -44,7 +44,6 @@ function MembersPage() {
           Authorization: `Bearer ${getToken()}`,
         },
       });
-      console.log(response.data);
 
       const { members } = response.data;
 
