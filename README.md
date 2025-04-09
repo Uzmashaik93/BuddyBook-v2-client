@@ -1,54 +1,66 @@
-# React + TypeScript + Vite
+# Buddy-Book-V2 <img src="https://github.com/BuddyBook/BuddyBook/blob/main/src/assets/images/logo/BuddyBook-final.png" width="30" alt="Buddy Book Logo">
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**BuddyBook** is a web-based application that allows users to create teams, add profiles, and invite friends to their teams via email. This platform combines the traditional slam book concept with modern features, providing a fun and easy way to connect, share, and engage with friends and team members.
 
-Currently, two official plugins are available:
+This project is inspired by a previous React app that my teammate Julia and I built. This version is built with Vite, TypeScript, and PostgreSQL.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🔗 Live Demo: [BuddyBook-V2](https://buddybook-v2.netlify.app/)
 
-## Expanding the ESLint configuration
+🔗 Back End Repo: [Click](https://github.com/Uzmashaik93/BuddyBook-v2-server)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Features
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- **Create Teams:** Easily create and manage teams.
+- **Add Profiles:** Users can add profiles with personal details and interests.
+- **Invite Friends:** Send email invitations to friends to join your team.
+- **User-friendly Interface:** Clean, intuitive design for easy use.
+
+## Tech Stack
+
+- **Frontend:** Vite, TypeScript, HTML, CSS, TailwindCSS
+- **Backend:** Node.js, TypeScript
+- **Database:** PostgreSQL
+- **Email Service:** Resend
+- **Deployment** Netlify
+
+## 🚀 Getting Started
+
+### 1️⃣ Clone the Repository
+```sh
+git clone (https://github.com/Uzmashaik93/BuddyBook-v2-client)
+cd BuddyBook-v2-client
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+### 2️⃣ Install Dependencies
+```sh
+npm install
 ```
+
+### 3️⃣ Run the Project Locally
+```sh
+npm run dev
+```
+
+
+### 4️⃣ Set Up Environment Variables
+Create a `.env` file in the root directory and add the following:
+
+```env
+VITE_API_URL=http://localhost:5000
+VITE_CLOUDINARY_URL=your_cloudinary_upload_url
+VITE_CLOUDINARY_PRESET=your_upload_preset
+```
+
+### 5️⃣ Build for Production
+```sh
+npm run build
+```
+
+### 5️⃣ Deploy to Netlify
+
+You can manually upload the \`/dist\` folder to **Netlify** or connect your GitHub repository for automatic deployment.
+
+## 🤝 Credits
+All credits and rights belong to the creators.
+
+
