@@ -89,15 +89,11 @@ function TeamsPage() {
       const updatedData = {
         status: "DECLINED",
       };
-      const response = await axios.put(
-        `${env}/invites/${inviteId}`,
-        updatedData,
-        {
-          headers: {
-            Authorization: `Bearer ${getToken()}`,
-          },
-        }
-      );
+      await axios.put(`${env}/invites/${inviteId}`, updatedData, {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
       toast.error("Inivite Declined");
       window.location.reload();
     } catch (error) {

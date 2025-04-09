@@ -85,7 +85,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   // Log Out Function
   const logout = () => {
     localStorage.removeItem("auth");
-    toast.success("User log out success!");
+    toast.success("User logged out success!");
     setIsAuthenticated(false);
     setUser(undefined);
   };

@@ -16,7 +16,7 @@ function InivitePage() {
 
   const onSubmit = async (data: TeamInvite) => {
     try {
-      const response = await axios.post(
+      await axios.post(
         `${env}/teams/invite/${teamId}`,
         {
           ...data,

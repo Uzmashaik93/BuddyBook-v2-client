@@ -18,7 +18,7 @@ function InvitesCreateProfile() {
 
   const onSubmit = async (data: Member) => {
     try {
-      const response = await axios.post(
+      await axios.post(
         `${env}/team/${teamId}/member`,
         {
           ...data,
