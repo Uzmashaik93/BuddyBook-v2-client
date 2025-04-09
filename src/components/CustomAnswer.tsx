@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 import axios from "axios";
-import { SetStateAction, useState } from "react";
-import { AuthUser } from "../context/auth.context";
+import { SetStateAction, useContext, useState } from "react";
+import { AuthContext, AuthUser } from "../context/auth.context";
+import toast from "react-hot-toast";
 const env = import.meta.env.VITE_BASE_API_URL;
 
 interface CustomAnswerProps {
@@ -15,14 +16,15 @@ interface CustomAnswerProps {
 function CustomAnswer({ profileId, user, onRefresh }: CustomAnswerProps) {
   const [answer, setAnswer] = useState("");
 
+  const { getToken } = useContext(AuthContext);
   const handleChange = (e: { target: { value: SetStateAction<string> } }) => {
     setAnswer(e.target.value);
   };
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    axios
-      .post(
+    try {
+      await axios.post(
         `${env}/custom/member/${profileId}`,
         {
           email: user?.email,
@@ -31,18 +33,16 @@ function CustomAnswer({ profileId, user, onRefresh }: CustomAnswerProps) {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("auth")}`,
+            Authorization: `Bearer ${getToken()}`,
           },
         }
-      )
-      .then((response) => {
-        console.log("Answer submitted successfully", response.data);
-        setAnswer("");
-        onRefresh();
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
+      );
+      toast.success("Answer Submitted!");
+      setAnswer("");
+      onRefresh();
+    } catch (error) {
+      console.log("Error", error);
+    }
   };
 
   return (

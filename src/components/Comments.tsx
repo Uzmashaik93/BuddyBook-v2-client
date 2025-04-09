@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { AuthUser } from "../context/auth.context";
+import toast from "react-hot-toast";
 const env = import.meta.env.VITE_BASE_API_URL;
 
 interface CommentsProps {
@@ -17,11 +18,11 @@ function Comments({ profileId, user, onRefresh }: CommentsProps) {
     setComment(event.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    axios
-      .post(
+    try {
+      await axios.post(
         `${env}/comments/member/${profileId}`,
         {
           comment,
@@ -32,16 +33,14 @@ function Comments({ profileId, user, onRefresh }: CommentsProps) {
             Authorization: `Bearer ${localStorage.getItem("auth")}`,
           },
         }
-      )
-      .then((response) => {
-        console.log("Success", response);
+      );
 
-        setComment("");
-        onRefresh();
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
+      toast.success("Comment submitted!");
+      setComment("");
+      onRefresh();
+    } catch (error) {
+      console.log("Error", error);
+    }
   };
   return (
     <div className="relative w-full max-w-xs mb-9 mt-8">
