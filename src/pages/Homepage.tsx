@@ -20,7 +20,7 @@ function Homepage() {
   };
 
   return (
-    <div className="m-10 p-8 flex justify-center items-center ">
+    <div className="flex justify-center items-center ">
       <div className="bg-white/10 backdrop-blur-2xs rounded-lg p-8 min-w-screen md:w-3/5 ">
         <h1 className="text-xl md:text-4xl font-bold text-pastelPink mb-4 text-center drop-shadow-lg">
           BuddyBook
@@ -40,7 +40,7 @@ function Homepage() {
             onClick={handleClick}
             className="bg-pink-500 hover:cursor-pointer border-1
             text-white font-bold py-3 px-6 rounded-full transition
-            duration-300 text-center"
+            duration-300 text-center mb-10"
           >
             {isAuthenticated ? "Create Your Memories" : "Sign up / Log in"}
           </button>
