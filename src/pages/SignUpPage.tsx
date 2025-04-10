@@ -27,7 +27,7 @@ function SignUpPage() {
     try {
       await axios.post(`${env}/auth/signup`, userData);
       toast.success("User sign up success!");
-      navigate("/teams");
+      navigate("/");
     } catch (error) {
       toast.error("User sign up fail!");
     }
