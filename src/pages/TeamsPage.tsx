@@ -16,6 +16,7 @@ function TeamsPage() {
 
   const [loading, setLoading] = useState(true); // New state to track loading
   const [invites, setInvites] = useState<TeamInvite[]>([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -42,46 +43,45 @@ function TeamsPage() {
   };
 
   // Function to fetch teams data from the API
-  const fetchTeams = () => {
-    axios
-      .get(`${env}/teams`, {
+  const fetchTeams = async () => {
+    try {
+      const response = await axios.get(`${env}/teams`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("auth")}`,
         },
-      })
-      .then((response) => {
-        const teamsObject = response.data;
-
-        setTeams(teamsObject.teams);
-
-        setLoading(false); // Set loading to false after fetching
-      })
-      .catch((error) => {
-        console.error("Error fetching teams:", error);
-        setLoading(false); // Ensure loading is set to false even on error
       });
+
+      const teamsObject = response.data;
+      setTeams(teamsObject.teams);
+    } catch (error) {
+      console.error("Error fetching teams:", error);
+    } finally {
+      setLoading(false); // Ensure loading is set to false in both success and error cases
+    }
   };
 
-  const handleRequestAccess = (team: Team, action: "view" | "delete") => {
+  const handleRequestAccess = async (team: Team, action: "view" | "delete") => {
     if (action === "view") {
       navigate(`/teams/${team.id}`);
+      return;
     }
 
     if (action === "delete") {
-      axios
-        .delete(`${env}/teams/${team.id}`, {
+      if (team.invites.length > 0) {
+        toast.error("Cannot delete the team with invites");
+      }
+      try {
+        await axios.delete(`${env}/teams/${team.id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("auth")}`,
           },
-        })
-        .then(() => {
-          navigate(`/teams`);
-          fetchTeams(); // Refresh the teams list after deletion
-          toast.error("Team deleted successfully!");
-        })
-        .catch((error) => {
-          console.log("Error", error);
         });
+        navigate(`/teams`);
+        await fetchTeams(); // Refresh the teams list after deletion
+        toast.error("Team deleted successfully!");
+      } catch (error) {
+        console.error("Error deleting team:", error);
+      }
     }
   };
 
@@ -149,11 +149,41 @@ function TeamsPage() {
                         <UserPen className="w-4 h-4" />
                       </button>
                       <button
-                        onClick={() => handleRequestAccess(team, "delete")}
+                        onClick={() => setShowDeleteModal(true)}
                         className="text-xs bg-red-300 hover:bg-red-500 text-white font-bold py-1 px-3 rounded-full transition duration-300"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
+                      {showDeleteModal && (
+                        <div className="fixed inset-0 bg-white/10 backdrop-blur-xs bg-opacity-50 flex justify-center items-center z-50">
+                          <div className="bg-gradient-to-r from-pink-50  to-white p-6 rounded-lg shadow-lg text-black max-w-sm w-full">
+                            <h2 className="text-xl font-bold mb-4">
+                              Confirm Deletion
+                            </h2>
+                            <p className="mb-6">
+                              Are you sure you want to delete this team? This
+                              action cannot be undone.
+                            </p>
+                            <div className="flex justify-end space-x-4">
+                              <button
+                                onClick={() => setShowDeleteModal(false)}
+                                className="bg-gray-200 rounded-3xl hover:bg-gray-300 text-black font-bold py-2 px-4 transition duration-300"
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setShowDeleteModal(false);
+                                  handleRequestAccess(team, "delete");
+                                }}
+                                className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-3xl transition duration-300"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                       <button
                         onClick={() => navigate(`/invite/${team.id}`)}
                         className="text-xs bg-blue-400 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded-full transition duration-300"
