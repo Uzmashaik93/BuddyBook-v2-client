@@ -34,8 +34,8 @@ function Homepage() {
         <div className="flex flex-col justify-center sm:flex-row gap-4">
           <button
             onClick={handleClick}
-            className="bg-white-400 hover:text-pink-600 border-1 border-pink-500
-            text-pink-400 font-bold py-3 px-6 rounded-full transition
+            className="bg-pink-500 hover:cursor-pointer border-1
+            text-white font-bold py-3 px-6 rounded-full transition
             duration-300 text-center"
           >
             {isAuthenticated ? "Create Your Memories" : "Sign up / Log in"}
