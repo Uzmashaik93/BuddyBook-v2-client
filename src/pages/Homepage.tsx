@@ -23,13 +23,17 @@ function Homepage() {
     <div className="m-10 p-8 flex justify-center items-center ">
       <div className="bg-white/10 backdrop-blur-2xs rounded-lg p-8 min-w-screen md:w-3/5 ">
         <h1 className="text-xl md:text-4xl font-bold text-pastelPink mb-4 text-center drop-shadow-lg">
-          Connect With Friends Through the Digital Slambook Experience
+          BuddyBook
+          <br />
+          <p className="text-sm font-medium mt-2">
+            Nostalgia meets the modern web – build your crew, share your story.
+          </p>
         </h1>
         <img src={logo} className="mx-auto mb-4 w-32 drop-shadow-lg" />
 
         <p className="text-gray-700 mb-6 text-center drop-shadow-md">
-          Create memories, ask fun questions, and learn surprising things about
-          your buddies with our modern take on the classic slambook.
+          Create memories along with your buddies with our modern take on the
+          classic slambook.
         </p>
         <div className="flex flex-col justify-center sm:flex-row gap-4">
           <button

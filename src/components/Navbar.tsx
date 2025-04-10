@@ -1,5 +1,5 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { House, Info, LogOut, Menu, UsersRound, X } from "lucide-react";
+import { House, Info, LogIn, LogOut, Menu, UsersRound, X } from "lucide-react";
 
 import logo from "../assets/images/logo/BuddyBook-final.png";
 
@@ -70,6 +70,14 @@ function Navbar() {
               <span className="font-medium">Logout</span>
             </button>
           )}
+          <NavLink
+            to="/login"
+            onClick={() => setIsOpen(false)}
+            className="flex items-center gap-2 text-gray-700 hover:text-pink-500"
+          >
+            <LogIn size={18} />
+            <span>LogIn</span>
+          </NavLink>
 
           <NavLink
             to="/about"
@@ -120,6 +128,14 @@ function Navbar() {
             </button>
           )}
 
+          <NavLink
+            to="/login"
+            onClick={() => setIsOpen(false)}
+            className="flex items-center gap-2 text-gray-700 hover:text-pink-500"
+          >
+            <Info size={18} />
+            <span>LogIn</span>
+          </NavLink>
           <NavLink
             to="/about"
             onClick={() => setIsOpen(false)}
