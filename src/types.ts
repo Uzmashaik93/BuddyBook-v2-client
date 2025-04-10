@@ -13,7 +13,7 @@ export interface Team {
     teamName: string
     timestamp: string
     invites: TeamInvite[]
-
+    userId: string
 }
 
 export interface Member {

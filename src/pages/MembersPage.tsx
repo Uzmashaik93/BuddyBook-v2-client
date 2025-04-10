@@ -7,7 +7,7 @@ import Loader from "../components/Loader";
 import { Plus, User } from "lucide-react";
 import { colorSetsMembers } from "../constants";
 import { AuthContext } from "../context/auth.context";
-import { Member } from "../types";
+import { Member, Team, TeamInvite } from "../types";
 const env = import.meta.env.VITE_BASE_API_URL;
 
 function MembersPage() {
@@ -15,15 +15,10 @@ function MembersPage() {
   const { getToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const [team, setTeam] = useState<{
-    id: string;
-    teamName: string;
-    createdBy: string;
-    createdAt: string;
-    updatedAt: string;
-    userId: string;
-  } | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [team, setTeam] = useState<Team>();
   const [members, setMembers] = useState([]);
+  const [invites, setInvites] = useState<TeamInvite[]>([]);
 
   // Function to get a random color set
   const getRandomColorSet = () => {
@@ -55,21 +50,41 @@ function MembersPage() {
     }
   };
 
-  useEffect(() => {
-    axios
-      .get(`${env}/teams/${id}`, {
+  const getInvites = async () => {
+    try {
+      const response = await axios.get(`${env}/invites/${id}`, {
         headers: {
-          Authorization: `Bearer ${getToken()}`,
+          Authorization: `Bearer ${localStorage.getItem("auth")}`,
         },
-      })
-      .then((response) => {
-        const teamObject = response.data.team;
-
-        setTeam(teamObject);
       });
-    if (id) {
-      fetchTeamData();
+
+      setInvites(response.data.invites);
+    } catch (error) {
+      console.log("Error", error);
     }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${env}/teams/${id}`, {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        });
+        const teamObject = response.data.team;
+        setTeam(teamObject);
+
+        if (id) {
+          await fetchTeamData();
+          await getInvites();
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, [id]);
 
   if (team === null) {
@@ -93,17 +108,61 @@ function MembersPage() {
           </h2>
         </div>
       </div>
+      <div className="flex justify-center align-middle">
+        <div className="flex gap-5">
+          <button
+            onClick={() => {
+              navigate(`/profile/create/${id}`);
+            }}
+            className="flex gap-1 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 shadow-md mx-auto  mb-10 hover:cursor-pointer"
+          >
+            <Plus strokeWidth={4} size={25} /> Profile
+          </button>
 
-      <button
-        onClick={() => {
-          navigate(`/profile/create/${id}`);
-        }}
-        className="flex gap-1 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 shadow-md mx-auto  mb-10 hover:cursor-pointer"
-      >
-        <Plus strokeWidth={4} size={25} />
-        Add Your Profile
-      </button>
-
+          {invites && invites.length > 0 && (
+            <button
+              className="flex gap-1 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 shadow-md mx-auto  mb-10 hover:cursor-pointer"
+              onClick={() => setShowModal(!showModal)}
+            >
+              Invites List
+            </button>
+          )}
+        </div>
+      </div>
+      {showModal && (
+        <div className="fixed inset-0 bg-white/10 backdrop-blur-xs bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-gradient-to-br from-pink-100 via-white  to-yellow-50 rounded-lg shadow-lg w-11/12 md:w-1/4 max-h-3/4 overflow-y-auto p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">Invites List</h2>
+              <button
+                onClick={() => setShowModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            </div>
+            {invites.length > 0 ? (
+              <ul className="space-y-4">
+                {invites.map((invite) => (
+                  <li
+                    key={invite.id}
+                    className="border rounded-lg p-4 flex justify-between items-center"
+                  >
+                    <div>
+                      <p className="font-semibold">{invite.invitedUserEmail}</p>
+                      <p className="text-sm text-gray-600">
+                        Status: {invite.status}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-500">No invites available.</p>
+            )}
+          </div>
+        </div>
+      )}
       <div className="flex justify-evenly flex-wrap gap-6 ml-10 mr-10 mb-10">
         {!members.length ? (
           <div className="flex items-center justify-center text-gray-300 mt-30">
@@ -137,7 +196,7 @@ function MembersPage() {
                   <h3 className="text-l font-semibold text-gray-800">
                     {profileObj.name}
                   </h3>
-                  {team.userId === profileObj.userId && (
+                  {team && team.userId === profileObj.userId && (
                     <p className="text-sm text-gray-600">Admin</p>
                   )}
                   <p className="text-sm text-gray-600">{profileObj.place}</p>

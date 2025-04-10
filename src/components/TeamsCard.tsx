@@ -28,14 +28,8 @@ function TeamsCard({
   return (
     <div
       key={team.id}
-      className={`rounded-lg p-6 border-2 shadow-lg transform hover:shadow-2xl transition-shadow duration-300 relative overflow-hidden ${colors.bg} ${colors.border}`}
+      className={`rounded-lg p-5 border-2 shadow-lg transform hover:shadow-2xl transition-shadow duration-300 relative overflow-hidden ${colors.bg} ${colors.border}`}
     >
-      {team.invites && team.invites.length > 0 && (
-        <p className="text-right text-sm text-gray-500">
-          {pendingInvites.length} Pending
-          {pendingInvites.length > 1 ? " Invites" : " Invite"}
-        </p>
-      )}
       <div className="absolute inset-0 opacity-0 transition-opacity duration-300 hover:opacity-20"></div>
       <div className="flex justify-center mb-4 relative z-10">
         <Users className={`w-8 h-8 ${colors.icon}`} />
@@ -59,6 +53,12 @@ function TeamsCard({
         </button>
       )}
       {actions}
+      {team.invites && team.invites.length > 0 && (
+        <p className="text-sm mt-4 hover:text-gray-600 text-gray-500 font-bold py-1.5 px-3 rounded-full mb-4 transition duration-300 relative z-10">
+          {pendingInvites.length} Pending
+          {pendingInvites.length > 1 ? " Invites" : " Invite"}
+        </p>
+      )}
     </div>
   );
 }
