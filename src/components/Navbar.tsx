@@ -14,7 +14,7 @@ function Navbar() {
   const location = useLocation();
   const currentPath = location.pathname;
   return (
-    <div className="navbar-container text-sm bg-white shadow-md py-2 top-0 w-full z-50">
+    <div className="navbar-container text-sm bg-white shadow-md py-2 top-0 w-full z-50 fixed">
       <div className="flex justify-between items-center px-7">
         {/* Logo */}
         <NavLink to="/">
@@ -70,15 +70,16 @@ function Navbar() {
               <span className="font-medium">Logout</span>
             </button>
           )}
-          <NavLink
-            to="/login"
-            onClick={() => setIsOpen(false)}
-            className="flex items-center gap-2 text-gray-700 hover:text-pink-500"
-          >
-            <LogIn size={18} />
-            <span>LogIn</span>
-          </NavLink>
-
+          {isAuthenticated && (
+            <NavLink
+              to="/login"
+              onClick={() => setIsOpen(false)}
+              className=" flex items-center hidden gap-2 text-gray-700 hover:text-pink-500"
+            >
+              <LogIn size={18} />
+              <span>LogIn</span>
+            </NavLink>
+          )}
           <NavLink
             to="/about"
             className="flex items-center gap-1 text-gray-700 transition hover:text-pink-500 group"
@@ -91,7 +92,7 @@ function Navbar() {
 
       {/* Mobile Nav */}
       {isOpen && (
-        <div className="w-full bg-white shadow-md md:hidden p-5 flex flex-col gap-4 ">
+        <div className="w-full bg-white shadow-md md:hidden p-5 flex flex-col gap-4">
           {currentPath !== "/" && (
             <NavLink
               to="/"
@@ -128,14 +129,16 @@ function Navbar() {
             </button>
           )}
 
-          <NavLink
-            to="/login"
-            onClick={() => setIsOpen(false)}
-            className="flex items-center gap-2 text-gray-700 hover:text-pink-500"
-          >
-            <Info size={18} />
-            <span>LogIn</span>
-          </NavLink>
+          {isAuthenticated && (
+            <NavLink
+              to="/login"
+              onClick={() => setIsOpen(false)}
+              className=" flex items-center hidden gap-2 text-gray-700 hover:text-pink-500"
+            >
+              <LogIn size={18} />
+              <span>LogIn</span>
+            </NavLink>
+          )}
           <NavLink
             to="/about"
             onClick={() => setIsOpen(false)}

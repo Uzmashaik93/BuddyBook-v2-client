@@ -6,7 +6,9 @@ function NonAuthPages() {
   return (
     <div>
       <Navbar />
-      <Outlet />
+      <div className="m-20">
+        <Outlet />
+      </div>
       <Footer />
     </div>
   );
