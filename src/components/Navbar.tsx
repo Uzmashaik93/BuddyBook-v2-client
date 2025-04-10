@@ -70,11 +70,11 @@ function Navbar() {
               <span className="font-medium">Logout</span>
             </button>
           )}
-          {isAuthenticated && (
+          {!isAuthenticated && (
             <NavLink
               to="/login"
               onClick={() => setIsOpen(false)}
-              className=" flex items-center hidden gap-2 text-gray-700 hover:text-pink-500"
+              className=" flex items-center gap-2 text-gray-700 hover:text-pink-500"
             >
               <LogIn size={18} />
               <span>LogIn</span>
