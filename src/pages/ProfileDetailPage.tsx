@@ -16,12 +16,15 @@ import CommentsCard from "../components/CommentsCard";
 import dummyImage from "../assets/images/dummy-profile-image.png";
 import { AuthContext } from "../context/auth.context";
 import { Member } from "../types";
+import toast from "react-hot-toast";
 
 const env = import.meta.env.VITE_BASE_API_URL;
 
 function Profile() {
   const { profileId, teamId } = useParams();
   const [profile, setProfile] = useState<Member | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   const { user } = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -59,7 +62,7 @@ function Profile() {
         }
       );
       if (response.status === 200) {
-        alert("Profile deleted successfully");
+        toast.success("Profile deleted");
         navigate(`/teams/${teamId}`);
       }
     } catch (error) {
@@ -180,7 +183,7 @@ function Profile() {
               </NavLink>
               <button
                 className="text-red-500 hover:cursor-pointer"
-                onClick={handleDelete}
+                onClick={() => setShowDeleteModal(!showDeleteModal)}
               >
                 <Trash2 size={29} />
               </button>
@@ -188,6 +191,34 @@ function Profile() {
           </div>
         </div>
       </div>
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-white/10 backdrop-blur-xs bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-gradient-to-r from-pink-50  to-white p-6 rounded-lg shadow-lg text-black max-w-sm w-full">
+            <h2 className="text-xl font-bold mb-4">Confirm Deletion</h2>
+            <p className="mb-6">
+              Are you sure you want to delete this team? This action cannot be
+              undone.
+            </p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="bg-gray-200 rounded-3xl hover:bg-gray-300 text-black font-bold py-2 px-4 transition duration-300"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  handleDelete();
+                }}
+                className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-3xl transition duration-300"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="flex-1 bg-gradient-to-br from-white to-gray-100 p-4 sm:p-6 rounded-lg shadow-lg mt-4 md:ml-17 md:mr-17 xl:ml-42 xl:mr-42">
         <h2 className="text-xl font-semibold mb-4 sm:mb-6 text-black drop-shadow-lg">
