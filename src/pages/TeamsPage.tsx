@@ -34,6 +34,7 @@ function TeamsPage() {
           Authorization: `Bearer ${localStorage.getItem("auth")}`,
         },
       });
+
       setInvites(response.data.invites);
     } catch (error) {
       console.log("Error", error);

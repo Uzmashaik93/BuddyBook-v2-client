@@ -12,6 +12,7 @@ export interface Team {
     members: Member[]
     teamName: string
     timestamp: string
+    invites: TeamInvite[]
 
 }
 
@@ -31,13 +32,6 @@ export interface Member {
     imageUrl: string
     userId: string
 }
-
-enum InviteStatus {
-    PENDING,
-    ACCEPTED,
-    DECLINED
-}
-
 export interface TeamInvite {
     id: string
     teamId: string
@@ -45,6 +39,13 @@ export interface TeamInvite {
     status: InviteStatus
     team: Team
 }
+enum InviteStatus {
+    PENDING,
+    ACCEPTED,
+    DECLINED
+}
+
+
 
 
 
