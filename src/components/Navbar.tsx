@@ -1,8 +1,7 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { House, Info, LogIn, LogOut, Menu, UsersRound, X } from "lucide-react";
 
-import logo from "../assets/images/logo/BuddyBook-final.png";
-
+import logo from "/BuddyBook-final.png";
 import "../components/Navbar.css";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/auth.context";

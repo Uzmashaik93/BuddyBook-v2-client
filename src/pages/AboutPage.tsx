@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
-import logo from "../assets/images/logo/BuddyBook-final.png";
+import logo from "/BuddyBook-final.png";
 
 const teamMembers = [
   {

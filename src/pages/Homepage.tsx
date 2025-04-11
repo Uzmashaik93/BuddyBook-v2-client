@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import logo from "../assets/images/logo/BuddyBook-final.png";
+import logo from "/BuddyBook-final.png";
 import Features from "../components/Features";
 import { features, steps } from "../constants";
 import HowItWorks from "../components/HowItWorks";
