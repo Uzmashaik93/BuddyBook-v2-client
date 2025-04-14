@@ -62,5 +62,6 @@ You can manually upload the \`/dist\` folder to **Netlify** or connect your GitH
 
 ## 🤝 Credits
 All credits and rights belong to the creators.
+---
 ![Repo Size](https://img.shields.io/github/repo-size/Uzmashaik93/BuddyBook-v2-client)
 
