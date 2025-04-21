@@ -13,7 +13,7 @@ function AuthPages() {
   return (
     <div>
       <Navbar />
-      <div className="m-20">
+      <div className="m-7">
         <Outlet />
       </div>
     </div>
