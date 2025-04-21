@@ -98,7 +98,7 @@ function Profile() {
 
         <div className="flex flex-col md:flex-row justify-between mb-3">
           {/* Left Block */}
-          <div className="flex flex-col items-center md:w-1/2 mb-4 relative group mr-8 pl-11">
+          <div className="flex flex-col items-center md:w-1/2 mb-4 relative group md:mr-8 md:pl-11">
             <div className="bg-white p-4 shadow-md rounded-md mb-4 relative group-hover:shadow-[0_0_10px_rgb(255,165,0)] transition duration-300">
               <Paperclip
                 className="text-gray-700 absolute top-0 left-0 -m-4"

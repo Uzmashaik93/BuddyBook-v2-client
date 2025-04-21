@@ -112,7 +112,7 @@ function TeamsPage() {
   }
 
   return (
-    <div>
+    <div className="mt-23">
       <div className="max-w-4xl mx-auto px-4 pb-6 sm:px-6 sm:pb-8">
         <h1 className="text-4xl font-bold text-black drop-shadow-lg mb-4 mt-4">
           Teams Page
