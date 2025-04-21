@@ -14,7 +14,7 @@ function BackButton({ text, to }: BackButtonProps) {
   };
 
   return (
-    <div className="mb-2">
+    <div className="mb-2 mt-6">
       <button
         onClick={handleClick}
         className="text-gray-600 text-sm hover:text-gray-900 flex items-center"
